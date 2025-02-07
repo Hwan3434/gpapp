@@ -21,3 +21,6 @@ dependencyResolutionManagement {
 
 rootProject.name = "Gpa"
 include(":app")
+include(":app:domain")
+include(":domain")
+include(":data")
