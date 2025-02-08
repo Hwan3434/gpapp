@@ -21,6 +21,9 @@ dependencyResolutionManagement {
 
 rootProject.name = "Gpa"
 include(":app")
-include(":app:domain")
-include(":domain")
-include(":data")
+include(":modules:domain")
+include(":modules:domain:entity")
+include(":modules:di")
+include(":modules:data")
+include(":modules:data")
+include(":modules:data:model")
