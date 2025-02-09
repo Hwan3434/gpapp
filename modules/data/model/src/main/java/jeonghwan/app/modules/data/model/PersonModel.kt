@@ -1,4 +1,4 @@
-package jeonghwan.app.modules.data.models
+package jeonghwan.app.modules.data.model
 
 data class PersonModel(
     val personKey: Int, // 식별키
@@ -9,4 +9,5 @@ data class PersonModel(
     val name : String, // 이름
     val gender : Boolean, // 성별
     val generator: Int, // 몇대손
+    val tombKey: Int?, // 묘 식별키
 )

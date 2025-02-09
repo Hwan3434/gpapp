@@ -14,4 +14,5 @@ kotlin {
 
 dependencies {
     implementation(project(":modules:domain:entity"))
+    implementation(project(":modules:data:model"))
 }

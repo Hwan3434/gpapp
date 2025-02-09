@@ -14,13 +14,12 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import jeonghwan.app.gpa.ui.screen.FavoritePersonScreen
-import jeonghwan.app.gpa.ui.screen.MapScreen
-import jeonghwan.app.gpa.ui.screen.PersonListScreen
+import jeonghwan.app.gpa.ui.screen.navi.favorite.FavoritePersonScreen
+import jeonghwan.app.gpa.ui.screen.navi.map.MapScreen
+import jeonghwan.app.gpa.ui.screen.navi.person.PersonListScreen
 
 
 @Composable

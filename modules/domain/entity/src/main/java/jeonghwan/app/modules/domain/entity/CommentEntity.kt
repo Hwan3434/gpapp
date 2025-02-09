@@ -1,3 +1,3 @@
 package jeonghwan.app.modules.domain.entity
 
-data class CommentEntity()
+//data class CommentEntity()
