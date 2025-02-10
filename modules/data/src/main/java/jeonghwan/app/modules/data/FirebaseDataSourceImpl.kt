@@ -20,7 +20,6 @@ class FirebaseDataSourceImpl (
         } catch (e: Exception) {
             e.printStackTrace()
         }
-
         return temp
     }
 

@@ -10,8 +10,9 @@ fun PersonModel.toEntity() = PersonEntity(
     spouse = spouse,
     alive = alive,
     etc = etc,
+    clan = clan,
     family = family,
-    name = name
+    name = name,
 )
 
 fun TombModel.toEntity() = TombEntity(
