@@ -15,11 +15,14 @@ fun Router(
     val navController = rememberNavController()
     NavHost(navController = navController, startDestination = "Main") {
         composable(route = "Main") {
-            MainScreen(modifier = modifier)
+            MainScreen(modifier = modifier, onNextButtonClicked = {
+                navController.navigate("PersonDetail/$it")
+            })
         }
 
-        composable(route = "PersonDetail") {
-            PersonDetailScreen()
+        composable(route = "PersonDetail/{personId}") { backStackEntry ->
+            val personId = backStackEntry.arguments?.getString("personId")?.toIntOrNull() ?: 0
+            PersonDetailScreen(modifier = modifier, personId)
         }
     }
 }

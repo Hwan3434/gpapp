@@ -15,6 +15,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import jeonghwan.app.gpa.ui.screen.navi.favorite.FavoritePersonScreen
@@ -23,8 +24,11 @@ import jeonghwan.app.gpa.ui.screen.navi.person.PersonListScreen
 
 
 @Composable
-fun MainScreen(modifier: Modifier = Modifier) {
-    var selectedTabIndex by remember { mutableIntStateOf(0) }
+fun MainScreen(
+    modifier: Modifier = Modifier,
+    onNextButtonClicked: (Int) -> Unit
+) {
+    var selectedTabIndex by rememberSaveable { mutableIntStateOf(0) }
     val tabs = listOf("Home", "Favorites", "Profile")
     val icons = listOf(Icons.Filled.Home, Icons.Filled.Favorite, Icons.Filled.Person)
 
@@ -45,10 +49,10 @@ fun MainScreen(modifier: Modifier = Modifier) {
             )
         }
     )  { innerPadding ->
-        Column(modifier = Modifier.padding(innerPadding)) {
+        Column(modifier = modifier.padding(innerPadding)) {
             when (selectedTabIndex) {
                 0 -> MapScreen()
-                1 -> PersonListScreen()
+                1 -> PersonListScreen(onNextButtonClicked = onNextButtonClicked)
                 2 -> FavoritePersonScreen()
             }
         }

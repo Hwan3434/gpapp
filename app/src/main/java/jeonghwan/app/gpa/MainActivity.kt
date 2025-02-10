@@ -21,9 +21,7 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             GpaTheme {
-                Scaffold { padding ->
-                    Router(modifier = Modifier.padding(padding))
-                }
+                Router(modifier = Modifier)
             }
         }
     }

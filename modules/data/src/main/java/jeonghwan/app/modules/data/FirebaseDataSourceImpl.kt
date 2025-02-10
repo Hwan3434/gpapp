@@ -13,7 +13,7 @@ class FirebaseDataSourceImpl (
     companion object {
         private const val PERSON_COLLECTION = "Person"
         private const val PERSON_PAGING_SIZE = 20L
-        private const val PERSON_ORDER_BY = "generator"
+        private const val PERSON_ORDER_BY_GENERATOR = "generator"
         private const val TOMB_COLLECTION = "Tomb"
     }
 
@@ -31,7 +31,7 @@ class FirebaseDataSourceImpl (
     ): Pair<List<PersonModel>, DocumentSnapshot?> {
         return try {
             val query = firebaseInstance.collection(PERSON_COLLECTION)
-                .orderBy(PERSON_ORDER_BY)
+                .orderBy(PERSON_ORDER_BY_GENERATOR)
                 .limit((size ?: PERSON_PAGING_SIZE).toLong())
 
             val pagedQuery = documentSnapshot?.let {
