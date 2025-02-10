@@ -1,7 +1,7 @@
 package jeonghwan.app.modules.di.usecase
 
-import jeonghwan.app.modules.domain.TombRepositoryInterface
-import jeonghwan.app.modules.domain.entity.TombEntity
+import jeonghwan.app.domain.TombRepositoryInterface
+import jeonghwan.app.entity.TombEntity
 
 class TombUseCaseImpl (
     private val tombRepository: TombRepositoryInterface

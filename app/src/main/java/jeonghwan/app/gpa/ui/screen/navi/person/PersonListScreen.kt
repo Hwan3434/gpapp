@@ -1,6 +1,7 @@
 package jeonghwan.app.gpa.ui.screen.navi.person
 
 import androidx.compose.foundation.layout.Column
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -13,22 +14,31 @@ fun PersonListScreen(viewModel: PersonListViewModel = hiltViewModel()) {
     val uiState by viewModel.uiState.collectAsState()
 
     Column {
-        // 버튼 추가
-        Button(onClick = { viewModel.loadPersonData() }) {
+        Button(onClick = { viewModel.getLoadPaging() }) {
             Text("Load Person Data")
         }
 
-        // 로딩 중일 때 표시
         if (uiState.isLoading) {
             Text("Loading...")
         }
 
-        // 오류 메시지 표시
         uiState.errorMessage?.let { errorMessage ->
             Text("Error: $errorMessage")
         }
 
-        // 데이터 표시
         Text("Person count: ${uiState.personData.size}")
+
+        if (uiState.showDialog) {
+            AlertDialog(
+                onDismissRequest = { viewModel.dismissDialog() },
+                confirmButton = {
+                    Button(onClick = { viewModel.dismissDialog() }) {
+                        Text("확인")
+                    }
+                },
+                title = { Text("데이터 로드 성공") },
+                text = { Text("데이터를 성공적으로 가져왔습니다.") }
+            )
+        }
     }
 }

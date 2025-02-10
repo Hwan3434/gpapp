@@ -1,14 +1,12 @@
 package jeonghwan.app.modules.di.repository
 
+import jeonghwan.app.domain.TombRepositoryInterface
 import jeonghwan.app.modules.data.DataSourceInterface
-import jeonghwan.app.modules.data.FirebaseDataSourceImpl
 import jeonghwan.app.modules.data.model.TombModel
 import jeonghwan.app.modules.di.common.toEntity
-import jeonghwan.app.modules.domain.TombRepositoryInterface
-import jeonghwan.app.modules.domain.entity.TombEntity
-import javax.inject.Inject
+import jeonghwan.app.entity.TombEntity
 
-class TombRepositoryImpl constructor(
+class TombRepositoryImpl (
     private val firebase: DataSourceInterface
 ) : TombRepositoryInterface {
 
@@ -17,8 +15,9 @@ class TombRepositoryImpl constructor(
         return tombModels.map { it.toEntity() }
     }
 
-    override suspend fun getTomb(key: Int): TombEntity {
-        TODO("Not yet implemented")
+    override suspend fun getTomb(key: Int): TombEntity? {
+        val model: TombModel? = firebase.getTomb(key)
+        return model?.toEntity()
     }
 
 }

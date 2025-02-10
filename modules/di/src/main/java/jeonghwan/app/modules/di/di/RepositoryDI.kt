@@ -4,11 +4,11 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import jeonghwan.app.domain.PersonRepositoryInterface
+import jeonghwan.app.domain.TombRepositoryInterface
 import jeonghwan.app.modules.data.DataSourceInterface
 import jeonghwan.app.modules.di.repository.PersonRepositoryImpl
 import jeonghwan.app.modules.di.repository.TombRepositoryImpl
-import jeonghwan.app.modules.domain.PersonRepositoryInterface
-import jeonghwan.app.modules.domain.TombRepositoryInterface
 import javax.inject.Singleton
 
 @Module
