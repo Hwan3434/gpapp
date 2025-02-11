@@ -16,7 +16,6 @@ data class PersonUiState(
     val personData: List<PersonEntity> = emptyList(),
     val isLoading: Boolean = false,
     val errorMessage: String? = null,
-    val showDialog: Boolean = false,
     val isLastPage: Boolean = false // 마지막 페이지 여부
 )
 
@@ -55,7 +54,6 @@ class PersonListViewModel @Inject constructor(
                         personData = _uiState.value.personData + (result.getOrNull()?.first ?: emptyList()),
                         isLoading = false,
                         errorMessage = null,
-                        showDialog = lastVisibleDocument == null, // 마지막 페이지일 때만 다이얼로그 표시
                         isLastPage = lastVisibleDocument == null,
                     )
                 }
@@ -64,7 +62,6 @@ class PersonListViewModel @Inject constructor(
                     _uiState.value.copy(
                         isLoading = false,
                         errorMessage = result.exceptionOrNull()?.message,
-                        showDialog = false
                     )
                 }
 
@@ -72,7 +69,6 @@ class PersonListViewModel @Inject constructor(
                     _uiState.value.copy(
                         isLoading = false,
                         errorMessage = "Unknown error",
-                        showDialog = false
                     )
                 }
             }
@@ -83,9 +79,5 @@ class PersonListViewModel @Inject constructor(
         lastVisibleDocument = null
         _uiState.value = _uiState.value.copy(isLastPage = false) // 상태 초기화
         getLoadPaging()
-    }
-
-    fun dismissDialog() {
-        _uiState.value = _uiState.value.copy(showDialog = false)
     }
 }

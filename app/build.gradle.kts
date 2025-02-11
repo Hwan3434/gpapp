@@ -61,9 +61,12 @@ dependencies {
     implementation(libs.firebase.database.ktx)
 
     implementation(libs.navigation.compose)
+    implementation(libs.timber)
 
     implementation(libs.hilt.android)
     kapt(libs.hilt.compiler)
     implementation(libs.androidx.hilt.navigation.compose)
+
+
 
 }
