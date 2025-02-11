@@ -104,6 +104,7 @@ fun PersonItemPreview() {
             spouse = 0,
             generator = 1,
             gender = true,
+            tombKey = 1,
         ),
         onDetailButtonClicked = {},
         onFavoriteButtonClicked = {},

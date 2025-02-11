@@ -9,7 +9,8 @@ data class PersonEntity(
     val clan: String?,
     val etc: String?,
     val family: String,
-    val name: String
+    val name: String,
+    val tombKey: Int?,
 )
 
 fun PersonEntity.getFamilyName(): String {
