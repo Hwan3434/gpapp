@@ -13,6 +13,8 @@ fun PersonModel.toEntity() = PersonEntity(
     clan = clan,
     family = family,
     name = name,
+    generator = generator,
+    gender = gender,
 )
 
 fun TombModel.toEntity() = TombEntity(

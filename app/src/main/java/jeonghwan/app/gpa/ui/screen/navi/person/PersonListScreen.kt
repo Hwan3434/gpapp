@@ -26,7 +26,12 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 
 @Composable
-fun PersonListScreen(viewModel: PersonListViewModel = hiltViewModel(), onNextButtonClicked: (Int) -> Unit) {
+fun PersonListScreen(
+    modifier: Modifier = Modifier,
+    viewModel: PersonListViewModel = hiltViewModel(),
+    onDetailButtonClicked: (Int) -> Unit,
+    onFavoriteButtonClicked: (Int) -> Unit
+) {
     val uiState by viewModel.uiState.collectAsState()
     val listState = rememberLazyListState()
 
@@ -48,10 +53,16 @@ fun PersonListScreen(viewModel: PersonListViewModel = hiltViewModel(), onNextBut
             Text("Error: $errorMessage")
         }
 
-        LazyColumn(state = listState) {
+        LazyColumn(
+            modifier = modifier.padding(16.dp),
+            state = listState
+        ) {
             items(uiState.personData) { person ->
-                PersonItem(person, onNextButtonClicked)
-                HorizontalDivider(thickness = 1.dp, color = Color.Gray) // 경계선 추가
+                PersonItem(
+                    person = person,
+                    onDetailButtonClicked = onDetailButtonClicked,
+                    onFavoriteButtonClicked = onFavoriteButtonClicked
+                )
             }
 
             if (!uiState.isLastPage) {
@@ -66,19 +77,6 @@ fun PersonListScreen(viewModel: PersonListViewModel = hiltViewModel(), onNextBut
                     }
                 }
             }
-        }
-
-        if (uiState.showDialog) {
-            AlertDialog(
-                onDismissRequest = { viewModel.dismissDialog() },
-                confirmButton = {
-                    Button(onClick = { viewModel.dismissDialog() }) {
-                        Text("확인")
-                    }
-                },
-                title = { Text("데이터 로드 성공") },
-                text = { Text("데이터를 성공적으로 가져왔습니다.") }
-            )
         }
     }
 }
