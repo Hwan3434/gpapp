@@ -87,7 +87,7 @@ sealed class NaviItems(val route: String, private val titleResId: Int, val icon:
 }
 
 
-val naviItemsSaver = Saver<NaviItems, String>(
+private val naviItemsSaver = Saver<NaviItems, String>(
     save = { it.route },
     restore = { route ->
         val tabs = listOf(NaviItems.Map, NaviItems.Person, NaviItems.Favorite)

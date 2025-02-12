@@ -2,6 +2,7 @@ package jeonghwan.app.gpa.ui.screen.navi.map
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.naver.maps.map.compose.MapType
 import dagger.hilt.android.lifecycle.HiltViewModel
 import jeonghwan.app.entity.PersonEntity
 import jeonghwan.app.entity.TombEntity
@@ -15,6 +16,7 @@ import javax.inject.Inject
 
 
 data class MapUiState(
+//    val mapTypeState : MapType = MapType.Satellite,
     val tempTomb: List<TempTomb> = emptyList(),
     val isLoading: Boolean = false,
     val errorMessage: String? = null,
@@ -30,6 +32,18 @@ class MapViewModel @Inject constructor(
 
     init {
         loadTomb()
+    }
+
+    fun toggleWindowVisible(tombKey: Int) {
+        _uiState.value = _uiState.value.copy(
+            tempTomb = _uiState.value.tempTomb.map {
+                if (it.tomb.key == tombKey) {
+                    it.copy(isWindowVisible = !it.isWindowVisible)
+                } else {
+                    it.copy(isWindowVisible = false)
+                }
+            }
+        )
     }
 
     fun loadTomb() {
@@ -66,11 +80,10 @@ class MapViewModel @Inject constructor(
         }
 
     }
-
 }
 
-
 data class TempTomb(
+    val isWindowVisible: Boolean = false,
     val tomb: TombEntity,
     val person: List<PersonEntity>
 )
