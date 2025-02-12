@@ -19,14 +19,11 @@ fun PersonModel.toEntity() = PersonEntity(
     tombKey = tombKey,
 )
 
-fun TombModel.toEntity(): TombEntity?{
-    assert(tombKey != null)
-    assert(latitude != null)
-    assert(longitude != null)
-    if(tombKey == null || latitude == null || longitude == null) return null
-     return TombEntity(
-         key = tombKey!!,
-         name = name,
-         location = GpGeoPoint(latitude!!, longitude!!),
-     )
+fun TombModel.toEntity(): TombEntity? {
+    if (tombKey == null || latitude == null || longitude == null) return null
+    return TombEntity(
+        key = tombKey!!,
+        name = name,
+        location = GpGeoPoint(latitude!!, longitude!!)
+    )
 }
