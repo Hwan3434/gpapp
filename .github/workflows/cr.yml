@@ -1,0 +1,27 @@
+# This is a basic workflow to help you get started with Actions
+
+name: Code Review
+
+permissions:
+  contents: read
+  pull-requests: write
+
+on:
+  pull_request:
+    types: [opened, reopened, synchronize]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: anc95/ChatGPT-CodeReview@main
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          # Optional
+          LANGUAGE: Korean
+          OPENAI_API_ENDPOINT: https://api.openai.com/v1
+          MODEL: gpt-4o-mini	 # https://platform.openai.com/docs/models
+          PROMPT: 필수로 한국어로 답변해주셔야하고, 해당 프로젝트는 Android Compose로 진행되는 클린 아키텍쳐를 적용한 프로젝트입니다.
+          IGNORE_PATTERNS: *.md
+          INCLUDE_PATTERNS: *.kt,*.java,*.kts,*.toml
