@@ -16,7 +16,6 @@ import javax.inject.Inject
 
 
 data class MapUiState(
-//    val mapTypeState : MapType = MapType.Satellite,
     val tempTomb: List<TempTomb> = emptyList(),
     val isLoading: Boolean = false,
     val errorMessage: String? = null,
@@ -46,7 +45,7 @@ class MapViewModel @Inject constructor(
         )
     }
 
-    fun loadTomb() {
+    private fun loadTomb() {
         _uiState.value = _uiState.value.copy(isLoading = true)
         viewModelScope.launch {
             val result = tombUseCase.getTombAll()

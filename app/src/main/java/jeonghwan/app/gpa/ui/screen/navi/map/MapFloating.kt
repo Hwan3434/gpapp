@@ -32,7 +32,6 @@ fun MapFloating(
         modifier = modifier,
         horizontalAlignment = Alignment.End,
     ) {
-
         Box(
             modifier = modifier
                 .background(Color.White, shape = RoundedCornerShape(8.dp))
@@ -55,7 +54,10 @@ fun MapFloating(
 }
 
 
-@Preview()
+@Preview(
+    widthDp = 80,
+    heightDp = 80,
+)
 @Composable
 fun MapFloatingPreview() {
     MapFloating(

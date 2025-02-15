@@ -104,6 +104,7 @@ fun MapItemScreen(
         ) {
             CircularProgressIndicator()
         }
+        return
     }
 
     val cameraPositionState = rememberCameraPositionState(
