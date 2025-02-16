@@ -2,6 +2,7 @@ package jeonghwan.app.modules.data
 
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
+import jeonghwan.app.entity.GpGeoPoint
 import jeonghwan.app.modules.data.model.PersonModel
 import jeonghwan.app.modules.data.model.TombModel
 import kotlinx.coroutines.tasks.await
@@ -70,7 +71,10 @@ class FirebaseDataSourceImpl (
         try {
             val res = firebaseInstance.collection(TOMB_COLLECTION).get().await()
             for (doc in res) {
+                val locationData = doc.get("location") as com.google.firebase.firestore.GeoPoint
                 val tomb: TombModel = doc.toObject(TombModel::class.java)
+                tomb.latitude = locationData.latitude
+                tomb.longitude = locationData.longitude
                 temp.add(tomb)
             }
         } catch (e: Exception) {

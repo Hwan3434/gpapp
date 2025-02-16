@@ -12,7 +12,7 @@ class TombRepositoryImpl (
 
     override suspend fun getTombAll(): List<TombEntity> {
         val tombModels: List<TombModel> = firebase.getTombAll()
-        return tombModels.map { it.toEntity() }
+        return tombModels.mapNotNull { it.toEntity() }
     }
 
     override suspend fun getTomb(key: Int): TombEntity? {
