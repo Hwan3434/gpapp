@@ -26,6 +26,7 @@ import com.naver.maps.map.compose.MapUiSettings
 import com.naver.maps.map.compose.NaverMap
 import com.naver.maps.map.compose.rememberCameraPositionState
 import jeonghwan.app.entity.TombEntity
+import timber.log.Timber
 
 
 fun MapType.changedNextMapType(): MapType {
@@ -74,15 +75,18 @@ private val naviMapSaver = Saver<MapType, String>(
 fun MapScreen(
     modifier: Modifier = Modifier,
     viewModel: MapViewModel = hiltViewModel(),
+    onNextButtonClicked: (Int) -> Unit,
 ) {
     val uiState by viewModel.uiState.collectAsState()
     MapItemScreen(
         modifier = modifier,
         uiState = uiState,
-    ) { tomb ->
-        viewModel.toggleWindowVisible(tomb.key)
-        false
-    }
+        onClick = { tomb ->
+            Timber.d("톰브 클릭 !!")
+            viewModel.toggleWindowVisible(tomb.key)
+        },
+        onDetailClick = onNextButtonClicked
+    )
 }
 
 @OptIn(ExperimentalNaverMapApi::class)
@@ -90,7 +94,8 @@ fun MapScreen(
 fun MapItemScreen(
     modifier: Modifier,
     uiState: MapUiState,
-    onClick: (TombEntity) -> Boolean = { false }
+    onClick: (TombEntity) -> Unit,
+    onDetailClick: (Int) -> Unit,
 ) {
 
     var mapState by rememberSaveable(stateSaver = naviMapSaver) { mutableStateOf(MapType.Satellite) }
@@ -132,9 +137,8 @@ fun MapItemScreen(
             uiState.tempTomb.map { tempTomb ->
                 GpWindow(
                     tempTomb = tempTomb,
-                    onClick = { _ ->
-                        onClick(tempTomb.tomb)
-                    }
+                    onClick = onClick,
+                    onDetailClick = onDetailClick
                 )
             }
         }

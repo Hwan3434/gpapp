@@ -27,7 +27,6 @@ fun MapFloating(
     text: String,
     onClick: () -> Unit,
 ) {
-
     Column(
         modifier = modifier,
         horizontalAlignment = Alignment.End,

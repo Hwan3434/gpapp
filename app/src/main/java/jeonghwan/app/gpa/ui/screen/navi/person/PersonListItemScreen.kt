@@ -10,11 +10,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
-import androidx.compose.material.icons.filled.CheckCircle
-import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Star
-import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
@@ -43,7 +40,7 @@ fun PersonItem(
             .fillMaxWidth()
             .padding(vertical = 8.dp),
         elevation = CardDefaults.cardElevation(2.dp),
-        onClick = { onDetailButtonClicked(person.personKey) }
+        onClick = { onDetailButtonClicked(person.key) }
     ) {
         Row(
             modifier = modifier
@@ -82,7 +79,7 @@ fun PersonItem(
                 Text("$fullFamilyName $generator")
             }
             IconButton(
-                onClick = { onFavoriteButtonClicked(person.personKey) },
+                onClick = { onFavoriteButtonClicked(person.key) },
             ) {
                 Icon(Icons.Default.Star, contentDescription = "Star", tint = Color.Yellow)
             }
@@ -95,7 +92,7 @@ fun PersonItem(
 fun PersonItemPreview() {
     PersonItem(
         person = PersonEntity(
-            personKey = 1,
+            key = 1,
             name = "이정환",
             family = "가평이씨",
             clan = "사직공파",
@@ -105,6 +102,9 @@ fun PersonItemPreview() {
             generator = 1,
             gender = true,
             tombKey = 1,
+            dateDeath = 0,
+            father = 0,
+            mather = 0,
         ),
         onDetailButtonClicked = {},
         onFavoriteButtonClicked = {},
