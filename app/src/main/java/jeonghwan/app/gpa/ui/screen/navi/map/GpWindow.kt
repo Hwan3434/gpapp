@@ -1,5 +1,7 @@
 package jeonghwan.app.gpa.ui.screen.navi.map
 
+import android.widget.Toast
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -28,6 +30,7 @@ import jeonghwan.app.entity.PersonEntity
 import jeonghwan.app.entity.TombEntity
 import jeonghwan.app.gpa.R
 import jeonghwan.app.modules.di.common.toFormattedDate
+import timber.log.Timber
 
 @OptIn(ExperimentalNaverMapApi::class)
 @Composable

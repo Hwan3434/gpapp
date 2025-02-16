@@ -1,5 +1,8 @@
 package jeonghwan.app.gpa.ui.screen.navi.map
 
+import android.app.Activity
+import android.widget.Toast
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -9,11 +12,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.Saver
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.naver.maps.geometry.LatLng
@@ -118,6 +123,12 @@ fun MapItemScreen(
         }
     )
 
+    BackOnPressed(
+        tempTomb = uiState.tempTomb,
+        onClick = onClick
+    )
+
+
     Box(
         modifier = modifier.fillMaxSize()
     ) {
@@ -132,7 +143,13 @@ fun MapItemScreen(
                 isCompassEnabled = true,
                 isRotateGesturesEnabled = false,
                 isLogoClickEnabled = false,
-            )
+            ),
+            onMapClick = { _, _ ->
+                Timber.d("맵 클릭 !!")
+                uiState.tempTomb.firstOrNull { it.isWindowVisible }?.let {
+                    onClick(it.tomb)
+                }
+            }
         ) {
             uiState.tempTomb.map { tempTomb ->
                 GpWindow(
@@ -151,5 +168,31 @@ fun MapItemScreen(
         ) {
             mapState = mapState.changedNextMapType()
         }
+    }
+}
+
+@Composable
+fun BackOnPressed(
+    tempTomb: List<TempTomb> = emptyList(),
+    onClick: (TombEntity) -> Unit,
+) {
+    val context = LocalContext.current
+    var backPressedState by remember { mutableStateOf(true) }
+    var backPressedTime = 0L
+
+    BackHandler(enabled = backPressedState) {
+        for (tomb in tempTomb) {
+            if (tomb.isWindowVisible) {
+                onClick(tomb.tomb)
+                return@BackHandler
+            }
+        }
+        if(System.currentTimeMillis() - backPressedTime <= 400L) {
+            (context as Activity).finish()
+        } else {
+            backPressedState = true
+            Toast.makeText(context, "한 번 더 누르시면 앱이 종료됩니다.", Toast.LENGTH_SHORT).show()
+        }
+        backPressedTime = System.currentTimeMillis()
     }
 }
