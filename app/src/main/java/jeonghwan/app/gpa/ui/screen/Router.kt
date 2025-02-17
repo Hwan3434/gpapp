@@ -11,7 +11,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import jeonghwan.app.gpa.ui.screen.main.mainScreen
+import jeonghwan.app.gpa.ui.screen.main.MainScreen
 import jeonghwan.app.gpa.ui.screen.navi.detail.PersonDetailScreen
 import jeonghwan.app.gpa.ui.screen.navi.detail.TombDetailScreen
 
@@ -36,6 +36,7 @@ sealed class RouterItems(val route: String) {
 @Composable
 fun Router(modifier: Modifier = Modifier) {
     val navController = rememberNavController()
+
     NavHost(
         navController = navController,
         startDestination = RouterItems.Main.route,
@@ -45,7 +46,7 @@ fun Router(modifier: Modifier = Modifier) {
         popExitTransition = { ExitTransition.None },
     ) {
         composable(route = RouterItems.Main.route) {
-            mainScreen(
+            MainScreen(
                 modifier = modifier,
                 onNextButtonClicked = { personKey ->
                     navController.navigate(RouterItems.PersonDetail.createPath(personKey))

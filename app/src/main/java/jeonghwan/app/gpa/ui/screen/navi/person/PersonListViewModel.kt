@@ -77,10 +77,4 @@ class PersonListViewModel
                     }
             }
         }
-
-        fun getReloadPaging() {
-            lastVisibleDocument = null
-            _uiState.value = _uiState.value.copy(isLastPage = false) // 상태 초기화
-            loadPaging()
-        }
     }

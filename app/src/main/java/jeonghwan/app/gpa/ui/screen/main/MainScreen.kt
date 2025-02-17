@@ -35,7 +35,7 @@ sealed class NaviItems(val route: String, private val titleResId: Int, val icon:
 
     data object Map : NaviItems(MAP, R.string.navi_map, Icons.Filled.LocationOn) {
         @Composable
-        override fun getScreen(
+        override fun GetScreen(
             modifier: Modifier,
             onNextButtonClicked: ((Int) -> Unit)?,
             onFavoriteButtonClicked: ((Int) -> Unit)?,
@@ -48,7 +48,7 @@ sealed class NaviItems(val route: String, private val titleResId: Int, val icon:
 
     data object Person : NaviItems(PERSON, R.string.navi_person, Icons.Filled.Person) {
         @Composable
-        override fun getScreen(
+        override fun GetScreen(
             modifier: Modifier,
             onNextButtonClicked: ((Int) -> Unit)?,
             onFavoriteButtonClicked: ((Int) -> Unit)?,
@@ -64,7 +64,7 @@ sealed class NaviItems(val route: String, private val titleResId: Int, val icon:
 
     data object Favorite : NaviItems(FAVORITE, R.string.navi_favorite, Icons.Filled.Favorite) {
         @Composable
-        override fun getScreen(
+        override fun GetScreen(
             modifier: Modifier,
             onNextButtonClicked: ((Int) -> Unit)?,
             onFavoriteButtonClicked: ((Int) -> Unit)?,
@@ -74,14 +74,14 @@ sealed class NaviItems(val route: String, private val titleResId: Int, val icon:
     }
 
     @Composable
-    abstract fun getScreen(
+    abstract fun GetScreen(
         modifier: Modifier,
         onNextButtonClicked: ((Int) -> Unit)?,
         onFavoriteButtonClicked: ((Int) -> Unit)?,
     )
 
     @Composable
-    fun getTab(
+    fun GetTab(
         selected: NaviItems,
         onClick: () -> Unit,
     ) {
@@ -120,7 +120,7 @@ fun MainScreen(
                 selectedTabIndex = tabs.indexOf(selectedTab),
                 tabs = {
                     tabs.forEach { tab ->
-                        tab.getTab(
+                        tab.GetTab(
                             selectedTab,
                         ) {
                             selectedTab = tab
@@ -132,7 +132,7 @@ fun MainScreen(
     ) { innerPadding ->
         Box(modifier = modifier.padding(innerPadding)) {
             saveableStateHolder.SaveableStateProvider(key = selectedTab.route) {
-                selectedTab.getScreen(
+                selectedTab.GetScreen(
                     modifier,
                     onNextButtonClicked,
                     onFavoriteButtonClicked,
