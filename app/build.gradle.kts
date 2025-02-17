@@ -1,8 +1,9 @@
-
 import java.util.Properties
-val properties = Properties().apply {
-    load(project.rootProject.file("local.properties").inputStream())
-}
+
+val properties =
+    Properties().apply {
+        load(project.rootProject.file("local.properties").inputStream())
+    }
 
 plugins {
     alias(libs.plugins.android.application)
@@ -10,6 +11,7 @@ plugins {
     alias(libs.plugins.kotlin.compose)
     kotlin("kapt")
     alias(libs.plugins.hilt)
+    alias(libs.plugins.ktlint)
 }
 android {
     namespace = "jeonghwan.app.gpa"
@@ -80,6 +82,4 @@ dependencies {
     testImplementation(libs.mockk)
     implementation(libs.kotlinx.coroutines.test)
     androidTestImplementation(libs.mockk.android)
-
-
 }

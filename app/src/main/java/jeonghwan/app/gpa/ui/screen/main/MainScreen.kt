@@ -24,7 +24,7 @@ import androidx.compose.ui.res.stringResource
 import jeonghwan.app.gpa.R
 import jeonghwan.app.gpa.ui.screen.navi.favorite.FavoritePersonScreen
 import jeonghwan.app.gpa.ui.screen.navi.map.MapScreen
-import jeonghwan.app.gpa.ui.screen.navi.person.PersonListScreen
+import jeonghwan.app.gpa.ui.screen.navi.person.ProxyPersonListScreen
 
 sealed class NaviItems(val route: String, private val titleResId: Int, val icon: ImageVector) {
     companion object {
@@ -35,76 +35,79 @@ sealed class NaviItems(val route: String, private val titleResId: Int, val icon:
 
     data object Map : NaviItems(MAP, R.string.navi_map, Icons.Filled.LocationOn) {
         @Composable
-        override fun GetScreen(
+        override fun getScreen(
             modifier: Modifier,
             onNextButtonClicked: ((Int) -> Unit)?,
-            onFavoriteButtonClicked: ((Int) -> Unit)?
+            onFavoriteButtonClicked: ((Int) -> Unit)?,
         ) {
             MapScreen(
-                onNextButtonClicked = onNextButtonClicked!!
+                onNextButtonClicked = onNextButtonClicked!!,
             )
         }
     }
 
     data object Person : NaviItems(PERSON, R.string.navi_person, Icons.Filled.Person) {
         @Composable
-        override fun GetScreen(
+        override fun getScreen(
             modifier: Modifier,
             onNextButtonClicked: ((Int) -> Unit)?,
-            onFavoriteButtonClicked: ((Int) -> Unit)?
+            onFavoriteButtonClicked: ((Int) -> Unit)?,
         ) {
             assert(onNextButtonClicked != null)
             assert(onFavoriteButtonClicked != null)
-            PersonListScreen(
+            ProxyPersonListScreen(
                 onDetailButtonClicked = onNextButtonClicked!!,
-                onFavoriteButtonClicked = onFavoriteButtonClicked!!
+                onFavoriteButtonClicked = onFavoriteButtonClicked!!,
             )
         }
     }
 
     data object Favorite : NaviItems(FAVORITE, R.string.navi_favorite, Icons.Filled.Favorite) {
         @Composable
-        override fun GetScreen(
+        override fun getScreen(
             modifier: Modifier,
             onNextButtonClicked: ((Int) -> Unit)?,
-            onFavoriteButtonClicked: ((Int) -> Unit)?
+            onFavoriteButtonClicked: ((Int) -> Unit)?,
         ) {
             FavoritePersonScreen()
         }
     }
 
     @Composable
-    abstract fun GetScreen(
+    abstract fun getScreen(
         modifier: Modifier,
         onNextButtonClicked: ((Int) -> Unit)?,
-        onFavoriteButtonClicked: ((Int) -> Unit)?
+        onFavoriteButtonClicked: ((Int) -> Unit)?,
     )
 
     @Composable
-    fun GetTab(selected: NaviItems, onClick: () -> Unit) {
+    fun getTab(
+        selected: NaviItems,
+        onClick: () -> Unit,
+    ) {
         Tab(
             icon = { Icon(this.icon, contentDescription = null) },
             text = { Text(stringResource(this.titleResId)) },
             selected = selected == this,
-            onClick = onClick
+            onClick = onClick,
         )
     }
 }
 
-
-private val naviItemsSaver = Saver<NaviItems, String>(
-    save = { it.route },
-    restore = { route ->
-        val tabs = listOf(NaviItems.Map, NaviItems.Person, NaviItems.Favorite)
-        tabs.find { it.route == route } ?: NaviItems.Map
-    }
-)
+private val naviItemsSaver =
+    Saver<NaviItems, String>(
+        save = { it.route },
+        restore = { route ->
+            val tabs = listOf(NaviItems.Map, NaviItems.Person, NaviItems.Favorite)
+            tabs.find { it.route == route } ?: NaviItems.Map
+        },
+    )
 
 @Composable
 fun MainScreen(
     modifier: Modifier = Modifier,
     onNextButtonClicked: (Int) -> Unit,
-    onFavoriteButtonClicked: (Int) -> Unit
+    onFavoriteButtonClicked: (Int) -> Unit,
 ) {
     var selectedTab by rememberSaveable(stateSaver = naviItemsSaver) { mutableStateOf(NaviItems.Map) }
     val tabs = listOf(NaviItems.Map, NaviItems.Person, NaviItems.Favorite)
@@ -117,22 +120,22 @@ fun MainScreen(
                 selectedTabIndex = tabs.indexOf(selectedTab),
                 tabs = {
                     tabs.forEach { tab ->
-                        tab.GetTab(
+                        tab.getTab(
                             selectedTab,
                         ) {
                             selectedTab = tab
                         }
                     }
-                }
+                },
             )
-        }
+        },
     ) { innerPadding ->
         Box(modifier = modifier.padding(innerPadding)) {
             saveableStateHolder.SaveableStateProvider(key = selectedTab.route) {
-                selectedTab.GetScreen(
+                selectedTab.getScreen(
                     modifier,
                     onNextButtonClicked,
-                    onFavoriteButtonClicked
+                    onFavoriteButtonClicked,
                 )
             }
         }

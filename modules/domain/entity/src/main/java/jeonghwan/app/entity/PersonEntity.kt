@@ -4,7 +4,7 @@ data class PersonEntity(
     val key: Int,
     val spouse: Int?,
     val generator: Int?,
-    val gender: Boolean,
+    val genderType: GenderType,
     val alive: Boolean,
     val clan: String?,
     val etc: String?,
@@ -16,6 +16,16 @@ data class PersonEntity(
     val mather: Int?,
 )
 
+// 성별 타입
+enum class GenderType {
+    Male,
+    Female
+}
+
 fun PersonEntity.getFamilyName(): String {
-    return "$family $clan"
+    return if(genderType == GenderType.Female) {
+        family
+    }else {
+        "$family $clan"
+    }
 }

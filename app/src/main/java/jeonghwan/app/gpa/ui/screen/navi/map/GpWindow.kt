@@ -16,14 +16,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.naver.maps.geometry.LatLng
 import com.naver.maps.map.compose.ExperimentalNaverMapApi
 import com.naver.maps.map.compose.MarkerComposable
 import com.naver.maps.map.compose.MarkerState
-import jeonghwan.app.entity.GpGeoPoint
 import jeonghwan.app.entity.PersonEntity
 import jeonghwan.app.entity.TombEntity
 import jeonghwan.app.gpa.R
@@ -40,12 +38,13 @@ fun GpWindow(
 
     MarkerComposable(
         keys = keysArray,
-        state = MarkerState(
-            LatLng(
-                tomb.tomb.location.latitude,
-                tomb.tomb.location.longitude
-            )
-        ),
+        state =
+            MarkerState(
+                LatLng(
+                    tomb.tomb.location.latitude,
+                    tomb.tomb.location.longitude,
+                ),
+            ),
         captionText = tomb.getCaption(),
         onClick = {
             if (tomb.isWindowVisible) {
@@ -55,7 +54,7 @@ fun GpWindow(
                 onClick(tomb.tomb)
                 true
             }
-        }
+        },
     ) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
@@ -71,72 +70,28 @@ fun GpWindow(
                 contentDescription = "Person",
                 tint = tomb.getColor(),
             )
-
         }
     }
 }
 
 @Composable
-fun GpWindowBox(
-    p: PersonEntity,
-) {
+fun GpWindowBox(p: PersonEntity) {
     val dateDeath =
         if (p.dateDeath == null || p.dateDeath == 0L) stringResource(R.string.non_death_date) else p.dateDeath!!.toFormattedDate()
     val etc = if (p.etc == null || p.etc == "") stringResource(R.string.non_etc) else p.etc!!
     Box(
-        modifier = Modifier
-            .background(Color.White, shape = RoundedCornerShape(16.dp))
-            .padding(16.dp)
+        modifier =
+            Modifier
+                .background(Color.White, shape = RoundedCornerShape(16.dp))
+                .padding(16.dp),
     ) {
         Column(
             horizontalAlignment = Alignment.Start,
-            verticalArrangement = Arrangement.spacedBy(8.dp) // 줄 간격
+            verticalArrangement = Arrangement.spacedBy(8.dp),
         ) {
             Text("${p.generator}${stringResource(R.string.generator_suffix)}", fontSize = 20.sp)
             Text("${stringResource(R.string.death_date)} : $dateDeath", fontSize = 20.sp)
             Text(etc, fontSize = 20.sp)
         }
     }
-}
-
-
-@Preview(showBackground = true)
-@Composable
-fun GpWindowPreview() {
-    // 더미 데이터 생성
-    val dummyPerson = PersonEntity(
-        key = 1,
-        name = "John Doe",
-        family = "Doe Family",
-        clan = "Doe Clan",
-        alive = true,
-        etc = "",
-        spouse = 0,
-        generator = 1,
-        gender = true,
-        tombKey = 1,
-        dateDeath = 0,
-        father = 0,
-        mather = 0,
-    )
-
-    val dummyTomb = TombDataModel(
-        tomb = TombEntity(
-            key = 1,
-            name = "Doe Tomb",
-            location = GpGeoPoint(
-                latitude = 37.5666103,
-                longitude = 126.9783882
-            )
-        ),
-        persons = listOf(dummyPerson),
-        isWindowVisible = true
-    )
-
-    // GpWindow 호출
-    GpWindow(
-        tomb = dummyTomb,
-        onClick = {},
-        onDetailClick = {}
-    )
 }

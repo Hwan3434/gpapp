@@ -24,6 +24,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import jeonghwan.app.entity.GenderType
 import jeonghwan.app.entity.PersonEntity
 import jeonghwan.app.entity.getFamilyName
 import jeonghwan.app.gpa.R
@@ -33,48 +34,42 @@ fun PersonItem(
     modifier: Modifier = Modifier,
     person: PersonEntity,
     onDetailButtonClicked: (Int) -> Unit,
-    onFavoriteButtonClicked: (Int) -> Unit
+    onFavoriteButtonClicked: (Int) -> Unit,
 ) {
     Card(
-        modifier = modifier
-            .fillMaxWidth()
-            .padding(vertical = 8.dp),
+        modifier =
+            modifier
+                .fillMaxWidth()
+                .padding(vertical = 8.dp),
         elevation = CardDefaults.cardElevation(2.dp),
-        onClick = { onDetailButtonClicked(person.key) }
+        onClick = { onDetailButtonClicked(person.key) },
     ) {
         Row(
-            modifier = modifier
-                .fillMaxWidth()
-                .padding(16.dp),
+            modifier =
+                modifier
+                    .fillMaxWidth()
+                    .padding(16.dp),
             horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically // 세로 가운데 정렬
+            verticalAlignment = Alignment.CenterVertically,
         ) {
-
             // 생사 유무 아이콘
             Icon(
                 imageVector = if (person.alive) Icons.Default.Check else Icons.Default.Close,
                 contentDescription = if (person.alive) "Alive" else "Deceased",
                 tint = if (person.alive) Color.Green else Color.Red,
-                modifier = modifier
-                    .wrapContentSize()
-                    .padding(end = 16.dp)
+                modifier =
+                    modifier
+                        .wrapContentSize()
+                        .padding(end = 16.dp),
             )
 
             Column(
                 modifier = modifier.weight(1f),
-                verticalArrangement = Arrangement.Center
+                verticalArrangement = Arrangement.Center,
             ) {
-                val fullFamilyName = if(person.gender) {
-                    person.family
-                }else {
-                    person.getFamilyName()
-                }
-                val generator = if(person.gender) {
-                    ""
-                }else {
-                    "${person.generator}${stringResource(R.string.generator_suffix)}"
-                }
-                Text("${person.name} ${if (person.gender) "女" else "男"}")
+                val fullFamilyName = person.getFamilyName()
+                val generator = person.getGenerator()
+                Text("${person.name} ${if (person.genderType == GenderType.Female) "女" else "男"}")
                 Spacer(modifier = Modifier.fillMaxHeight(0.1f))
                 Text("$fullFamilyName $generator")
             }
@@ -89,24 +84,59 @@ fun PersonItem(
 
 @Preview
 @Composable
-fun PersonItemPreview() {
+fun MaleItemPreview() {
     PersonItem(
-        person = PersonEntity(
-            key = 1,
-            name = "이정환",
-            family = "가평이씨",
-            clan = "사직공파",
-            alive = true,
-            etc = "",
-            spouse = 0,
-            generator = 1,
-            gender = true,
-            tombKey = 1,
-            dateDeath = 0,
-            father = 0,
-            mather = 0,
-        ),
+        person =
+            PersonEntity(
+                key = 1,
+                name = "철수",
+                family = "가평이씨",
+                clan = "사직공파",
+                alive = false,
+                etc = "",
+                spouse = 0,
+                generator = 1,
+                genderType = GenderType.Male,
+                tombKey = 1,
+                dateDeath = 0,
+                father = 0,
+                mather = 0,
+            ),
         onDetailButtonClicked = {},
         onFavoriteButtonClicked = {},
     )
+}
+
+@Preview
+@Composable
+fun FemalePreview() {
+    PersonItem(
+        person =
+            PersonEntity(
+                key = 1,
+                name = "영희",
+                family = "가평이씨",
+                clan = "사직공파",
+                alive = true,
+                etc = "",
+                spouse = 0,
+                generator = 1,
+                genderType = GenderType.Female,
+                tombKey = 1,
+                dateDeath = 0,
+                father = 0,
+                mather = 0,
+            ),
+        onDetailButtonClicked = {},
+        onFavoriteButtonClicked = {},
+    )
+}
+
+@Composable
+private fun PersonEntity.getGenerator(): String {
+    return if (genderType == GenderType.Female) {
+        ""
+    } else {
+        "$generator${stringResource(R.string.generator_suffix)}"
+    }
 }

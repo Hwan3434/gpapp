@@ -35,7 +35,6 @@ import jeonghwan.app.entity.TombEntity
 import jeonghwan.app.gpa.R
 import timber.log.Timber
 
-
 fun MapType.changedNextMapType(): MapType {
     return when (this) {
         MapType.Basic -> MapType.Hybrid
@@ -61,23 +60,24 @@ fun MapType.toKorean(): String {
     }
 }
 
-private val naviMapSaver = Saver<MapType, String>(
-    save = { it.value.name },
-    restore = { route ->
-        route.let {
-            when (it) {
-                MapType.Basic.value.name -> MapType.Basic
-                MapType.Hybrid.value.name -> MapType.Hybrid
-                MapType.Navi.value.name -> MapType.Navi
-                MapType.Terrain.value.name -> MapType.Terrain
-                MapType.Satellite.value.name -> MapType.Satellite
-                MapType.NaviHybrid.value.name -> MapType.NaviHybrid
-                MapType.None.value.name -> MapType.None
-                else -> MapType.Satellite
+private val naviMapSaver =
+    Saver<MapType, String>(
+        save = { it.value.name },
+        restore = { route ->
+            route.let {
+                when (it) {
+                    MapType.Basic.value.name -> MapType.Basic
+                    MapType.Hybrid.value.name -> MapType.Hybrid
+                    MapType.Navi.value.name -> MapType.Navi
+                    MapType.Terrain.value.name -> MapType.Terrain
+                    MapType.Satellite.value.name -> MapType.Satellite
+                    MapType.NaviHybrid.value.name -> MapType.NaviHybrid
+                    MapType.None.value.name -> MapType.None
+                    else -> MapType.Satellite
+                }
             }
-        }
-    }
-)
+        },
+    )
 
 @Composable
 fun MapScreen(
@@ -89,7 +89,6 @@ fun MapScreen(
 
     viewModel.loadTombData()
 
-
     MapItemScreen(
         modifier = modifier,
         uiState = uiState,
@@ -97,7 +96,7 @@ fun MapScreen(
             viewModel.toggleTombPopupWindowVisibility(tomb.key)
         },
         onDetailClick = onNextButtonClicked,
-        onBackEvent = { viewModel.onBackEvent() }
+        onBackEvent = { viewModel.onBackEvent() },
     )
 }
 
@@ -108,29 +107,30 @@ fun MapItemScreen(
     uiState: MapUiState,
     onClick: (TombEntity) -> Unit,
     onDetailClick: (Int) -> Unit,
-    onBackEvent: () -> Boolean
+    onBackEvent: () -> Boolean,
 ) {
-
     var mapState by rememberSaveable(stateSaver = naviMapSaver) { mutableStateOf(MapType.Satellite) }
 
     if (uiState.isLoading) {
         Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .fillMaxHeight()
-                .padding(16.dp),
-            contentAlignment = Alignment.Center // 수평 및 수직 중앙 정렬
+            modifier =
+                Modifier
+                    .fillMaxWidth()
+                    .fillMaxHeight()
+                    .padding(16.dp),
+            contentAlignment = Alignment.Center,
         ) {
             CircularProgressIndicator()
         }
         return
     }
 
-    val cameraPositionState = rememberCameraPositionState(
-        init = {
-            position = CameraPosition(LatLng(36.615743, 128.352462), 14.0)
-        }
-    )
+    val cameraPositionState =
+        rememberCameraPositionState(
+            init = {
+                position = CameraPosition(LatLng(36.615743, 128.352462), 14.0)
+            },
+        )
 
     val context = LocalContext.current
     val exitMessage = stringResource(R.string.toast_exit)
@@ -143,40 +143,43 @@ fun MapItemScreen(
     }
 
     Box(
-        modifier = modifier.fillMaxSize()
+        modifier = modifier.fillMaxSize(),
     ) {
         NaverMap(
             modifier = modifier.fillMaxSize(),
             cameraPositionState = cameraPositionState,
-            properties = MapProperties(
-                locationTrackingMode = LocationTrackingMode.Follow,
-                mapType = mapState,
-            ),
-            uiSettings = MapUiSettings(
-                isCompassEnabled = true,
-                isRotateGesturesEnabled = false,
-                isLogoClickEnabled = false,
-            ),
+            properties =
+                MapProperties(
+                    locationTrackingMode = LocationTrackingMode.Follow,
+                    mapType = mapState,
+                ),
+            uiSettings =
+                MapUiSettings(
+                    isCompassEnabled = true,
+                    isRotateGesturesEnabled = false,
+                    isLogoClickEnabled = false,
+                ),
             onMapClick = { _, _ ->
                 Timber.d("맵 클릭 !!")
                 uiState.tombs.firstOrNull { it.isWindowVisible }?.let {
                     onClick(it.tomb)
                 }
-            }
+            },
         ) {
             uiState.tombs.map { tempTomb ->
                 GpWindow(
                     tomb = tempTomb,
                     onClick = onClick,
-                    onDetailClick = onDetailClick
+                    onDetailClick = onDetailClick,
                 )
             }
         }
 
         MapFloating(
-            modifier = Modifier
-                .align(Alignment.BottomEnd)
-                .padding(8.dp),
+            modifier =
+                Modifier
+                    .align(Alignment.BottomEnd)
+                    .padding(8.dp),
             text = mapState.toKorean(),
         ) {
             mapState = mapState.changedNextMapType()
@@ -189,7 +192,7 @@ fun BackOnPressed(
     uiState: MapUiState,
     onBackEvent: () -> Boolean,
     onClick: (TombEntity) -> Unit,
-    onExitMessage: () -> Unit
+    onExitMessage: () -> Unit,
 ) {
     val context = LocalContext.current
 
@@ -199,9 +202,9 @@ fun BackOnPressed(
             return@BackHandler
         }
 
-        if(onBackEvent()) {
+        if (onBackEvent()) {
             (context as Activity).finish()
-        }else {
+        } else {
             onExitMessage()
         }
     }

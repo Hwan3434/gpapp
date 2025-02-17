@@ -11,72 +11,107 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import jeonghwan.app.gpa.ui.screen.main.MainScreen
+import jeonghwan.app.gpa.ui.screen.main.mainScreen
 import jeonghwan.app.gpa.ui.screen.navi.detail.PersonDetailScreen
-import timber.log.Timber
+import jeonghwan.app.gpa.ui.screen.navi.detail.TombDetailScreen
 
 sealed class RouterItems(val route: String) {
-    data object MAIN : RouterItems("main")
-    data object PERSON_DETAIL : RouterItems("personDetail"){
-        const val parameter = "personKey"
-        val path = "$route/{$parameter}"
+    data object Main : RouterItems("main")
+
+    data object PersonDetail : RouterItems("personDetail") {
+        const val PARAM = "personKey"
+        val path = "$route/{$PARAM}"
+
         fun createPath(personKey: Int) = "$route/$personKey"
+    }
+
+    data object TombDetail : RouterItems("tombDetail") {
+        const val PARAM = "tombKey"
+        val path = "$route/{$PARAM}"
+
+        fun createPath(tombKey: Int) = "$route/$tombKey"
     }
 }
 
 @Composable
-fun Router(
-    modifier: Modifier = Modifier,
-) {
+fun Router(modifier: Modifier = Modifier) {
     val navController = rememberNavController()
     NavHost(
         navController = navController,
-        startDestination = RouterItems.MAIN.route,
+        startDestination = RouterItems.Main.route,
         exitTransition = { ExitTransition.None },
         popEnterTransition = { EnterTransition.None },
         enterTransition = { EnterTransition.None },
         popExitTransition = { ExitTransition.None },
     ) {
-        composable(route = RouterItems.MAIN.route) {
-            MainScreen(
+        composable(route = RouterItems.Main.route) {
+            mainScreen(
                 modifier = modifier,
                 onNextButtonClicked = { personKey ->
-                    Timber.d("화면 전환 요청 : $personKey : ${RouterItems.PERSON_DETAIL.createPath(personKey)}")
-                    navController.navigate(RouterItems.PERSON_DETAIL.createPath(personKey))
+                    navController.navigate(RouterItems.PersonDetail.createPath(personKey))
                 },
-                onFavoriteButtonClicked = { personKey ->
-                    TODO("Not yet implemented")
-                }
+                onFavoriteButtonClicked = { tombKey ->
+                    navController.navigate(RouterItems.TombDetail.createPath(tombKey))
+                },
             )
         }
 
         composable(
-            route = RouterItems.PERSON_DETAIL.path,
-            arguments = listOf(
-                navArgument(RouterItems.PERSON_DETAIL.parameter) {
-                    type = NavType.IntType
-                }
-            ),
+            route = RouterItems.PersonDetail.path,
+            arguments =
+                listOf(
+                    navArgument(RouterItems.PersonDetail.PARAM) {
+                        type = NavType.IntType
+                    },
+                ),
             enterTransition = {
                 slideIntoContainer(
                     AnimatedContentTransitionScope.SlideDirection.Left,
-                    animationSpec = tween(700)
+                    animationSpec = tween(700),
                 )
             },
             popExitTransition = {
                 slideOutOfContainer(
                     AnimatedContentTransitionScope.SlideDirection.Right,
-                    animationSpec = tween(700)
+                    animationSpec = tween(700),
                 )
             },
         ) { backStackEntry ->
-            val personKey = backStackEntry.arguments!!.getInt(RouterItems.PERSON_DETAIL.parameter)
+            val personKey = backStackEntry.arguments!!.getInt(RouterItems.PersonDetail.PARAM)
             PersonDetailScreen(
                 modifier = modifier,
                 personKey = personKey,
-                onFavoriteButtonClicked = { personKey ->
+                onFavoriteButtonClicked = { _ ->
                     TODO("Not yet implemented")
-                }
+                },
+            )
+        }
+
+        composable(
+            route = RouterItems.TombDetail.path,
+            arguments =
+                listOf(
+                    navArgument(RouterItems.TombDetail.PARAM) {
+                        type = NavType.IntType
+                    },
+                ),
+            enterTransition = {
+                slideIntoContainer(
+                    AnimatedContentTransitionScope.SlideDirection.Left,
+                    animationSpec = tween(700),
+                )
+            },
+            popExitTransition = {
+                slideOutOfContainer(
+                    AnimatedContentTransitionScope.SlideDirection.Right,
+                    animationSpec = tween(700),
+                )
+            },
+        ) { backStackEntry ->
+            val tombKey = backStackEntry.arguments!!.getInt(RouterItems.TombDetail.PARAM)
+            TombDetailScreen(
+                modifier = modifier,
+                tombKey = tombKey,
             )
         }
     }

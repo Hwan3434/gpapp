@@ -1,5 +1,6 @@
 package jeonghwan.app.modules.di.common
 
+import jeonghwan.app.entity.GenderType
 import jeonghwan.app.entity.GpGeoPoint
 import jeonghwan.app.entity.PersonEntity
 import jeonghwan.app.modules.data.model.PersonModel
@@ -18,7 +19,7 @@ fun PersonModel.toEntity() = PersonEntity(
     family = family,
     name = name,
     generator = generator,
-    gender = gender,
+    genderType = if(gender) GenderType.Female else GenderType.Male,
     tombKey = tombKey,
     dateDeath = dateDeath,
     father = father,

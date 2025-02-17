@@ -20,7 +20,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 
-
 @Composable
 fun MapFloating(
     modifier: Modifier,
@@ -32,12 +31,13 @@ fun MapFloating(
         horizontalAlignment = Alignment.End,
     ) {
         Box(
-            modifier = modifier
-                .background(Color.White, shape = RoundedCornerShape(8.dp))
+            modifier =
+                modifier
+                    .background(Color.White, shape = RoundedCornerShape(8.dp)),
         ) {
             Text(
                 text,
-                fontWeight = FontWeight.Bold
+                fontWeight = FontWeight.Bold,
             )
         }
 
@@ -52,7 +52,6 @@ fun MapFloating(
     }
 }
 
-
 @Preview(
     widthDp = 80,
     heightDp = 80,
@@ -62,8 +61,6 @@ fun MapFloatingPreview() {
     MapFloating(
         modifier = Modifier.fillMaxSize(),
         text = "인공위성",
-        onClick = { }
+        onClick = { },
     )
 }
-
-
