@@ -33,11 +33,11 @@ fun PersonListScreen(
     LaunchedEffect(listState) {
         snapshotFlow { listState.layoutInfo.visibleItemsInfo.lastOrNull()?.index }
             .collect { lastVisibleItemIndex ->
-                if(uiState.isLastPage || uiState.isLoading) {
+                if (uiState.isLastPage || uiState.isLoading) {
                     return@collect
                 }
                 if (lastVisibleItemIndex == uiState.personData.lastIndex) {
-                    viewModel.getLoadPaging()
+                    viewModel.loadPaging()
                 }
             }
     }
@@ -60,7 +60,7 @@ fun PersonListScreen(
             }
 
             if (!uiState.isLastPage) {
-                item{
+                item {
                     Box(
                         modifier = Modifier
                             .fillMaxWidth()

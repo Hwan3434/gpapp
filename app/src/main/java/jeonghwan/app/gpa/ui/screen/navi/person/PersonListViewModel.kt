@@ -29,11 +29,11 @@ class PersonListViewModel @Inject constructor(
     private var lastVisibleDocument: DocumentSnapshot? = null
 
     init {
-        getLoadPaging()
+        loadPaging()
     }
 
-    fun getLoadPaging() {
-        if (_uiState.value.isLastPage) {
+    fun loadPaging() {
+        if (_uiState.value.isLoading || _uiState.value.isLastPage) {
             return
         } // 마지막 페이지면 로드하지 않음
 
@@ -41,7 +41,7 @@ class PersonListViewModel @Inject constructor(
 
         viewModelScope.launch {
 
-//            delay(2_000) // 1초 지연
+            delay(2_000) // 1초 지연
 
             val result = personUseCase.getPersonPaging(lastVisibleDocument)
             _uiState.value = when {
@@ -78,6 +78,6 @@ class PersonListViewModel @Inject constructor(
     fun getReloadPaging() {
         lastVisibleDocument = null
         _uiState.value = _uiState.value.copy(isLastPage = false) // 상태 초기화
-        getLoadPaging()
+        loadPaging()
     }
 }

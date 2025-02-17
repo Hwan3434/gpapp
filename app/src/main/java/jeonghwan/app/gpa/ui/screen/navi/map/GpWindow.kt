@@ -1,7 +1,5 @@
 package jeonghwan.app.gpa.ui.screen.navi.map
 
-import android.widget.Toast
-import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -30,43 +28,31 @@ import jeonghwan.app.entity.PersonEntity
 import jeonghwan.app.entity.TombEntity
 import jeonghwan.app.gpa.R
 import jeonghwan.app.modules.di.common.toFormattedDate
-import timber.log.Timber
 
 @OptIn(ExperimentalNaverMapApi::class)
 @Composable
 fun GpWindow(
-    tempTomb: TempTomb,
+    tomb: TombDataModel,
     onClick: (TombEntity) -> Unit,
     onDetailClick: (Int) -> Unit,
 ) {
-    val p = tempTomb.person.first()
-    val caption = if (p.gender) {
-        p.family
-    } else {
-        p.name
-    }
-    val color = if (p.gender) {
-        Color.Magenta
-    } else {
-        Color.Blue
-    }
-    val keysArray = arrayOf(tempTomb.isWindowVisible)
+    val keysArray = arrayOf(tomb.isWindowVisible)
 
     MarkerComposable(
         keys = keysArray,
         state = MarkerState(
             LatLng(
-                tempTomb.tomb.location.latitude,
-                tempTomb.tomb.location.longitude
+                tomb.tomb.location.latitude,
+                tomb.tomb.location.longitude
             )
         ),
-        captionText = caption,
+        captionText = tomb.getCaption(),
         onClick = {
-            if (tempTomb.isWindowVisible) {
-                onDetailClick(p.key)
+            if (tomb.isWindowVisible) {
+                onDetailClick(tomb.getFirstPersonKey())
                 false
             } else {
-                onClick(tempTomb.tomb)
+                onClick(tomb.tomb)
                 true
             }
         }
@@ -74,8 +60,8 @@ fun GpWindow(
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
-            if (tempTomb.isWindowVisible) {
-                GpWindowBox(p)
+            if (tomb.isWindowVisible) {
+                GpWindowBox(tomb.getFirstPerson())
             }
 
             Spacer(modifier = Modifier.padding(2.dp))
@@ -83,7 +69,7 @@ fun GpWindow(
             Icon(
                 imageVector = Icons.Default.AccountCircle,
                 contentDescription = "Person",
-                tint = color,
+                tint = tomb.getColor(),
             )
 
         }
@@ -95,11 +81,11 @@ fun GpWindowBox(
     p: PersonEntity,
 ) {
     val dateDeath =
-        if (p.dateDeath == null || p.dateDeath == 0L) "알 수 없음" else p.dateDeath!!.toFormattedDate()
-    val etc = if (p.etc == null || p.etc == "") "설명이 없습니다." else p.etc!!
+        if (p.dateDeath == null || p.dateDeath == 0L) stringResource(R.string.non_death_date) else p.dateDeath!!.toFormattedDate()
+    val etc = if (p.etc == null || p.etc == "") stringResource(R.string.non_etc) else p.etc!!
     Box(
         modifier = Modifier
-            .background(Color.White, shape = RoundedCornerShape(16.dp)) // 라운딩된 배경
+            .background(Color.White, shape = RoundedCornerShape(16.dp))
             .padding(16.dp)
     ) {
         Column(
@@ -134,7 +120,7 @@ fun GpWindowPreview() {
         mather = 0,
     )
 
-    val dummyTomb = TempTomb(
+    val dummyTomb = TombDataModel(
         tomb = TombEntity(
             key = 1,
             name = "Doe Tomb",
@@ -143,13 +129,13 @@ fun GpWindowPreview() {
                 longitude = 126.9783882
             )
         ),
-        person = listOf(dummyPerson),
+        persons = listOf(dummyPerson),
         isWindowVisible = true
     )
 
     // GpWindow 호출
     GpWindow(
-        tempTomb = dummyTomb,
+        tomb = dummyTomb,
         onClick = {},
         onDetailClick = {}
     )

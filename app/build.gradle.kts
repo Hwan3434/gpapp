@@ -76,6 +76,10 @@ dependencies {
     implementation(libs.naver.map)
     implementation(libs.play.services.location)
     implementation(libs.naver.map.location)
+    // testing
+    testImplementation(libs.mockk)
+    implementation(libs.kotlinx.coroutines.test)
+    androidTestImplementation(libs.mockk.android)
 
 
 }

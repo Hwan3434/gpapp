@@ -4,6 +4,7 @@ import android.app.Activity
 import android.widget.Toast
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -12,13 +13,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.Saver
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.naver.maps.geometry.LatLng
@@ -31,6 +32,7 @@ import com.naver.maps.map.compose.MapUiSettings
 import com.naver.maps.map.compose.NaverMap
 import com.naver.maps.map.compose.rememberCameraPositionState
 import jeonghwan.app.entity.TombEntity
+import jeonghwan.app.gpa.R
 import timber.log.Timber
 
 
@@ -46,15 +48,16 @@ fun MapType.changedNextMapType(): MapType {
     }
 }
 
+@Composable
 fun MapType.toKorean(): String {
     return when (this) {
-        MapType.Basic -> "일반"
-        MapType.Hybrid -> "위성(겹쳐보기)"
-        MapType.Navi -> "네비게이션"
-        MapType.Terrain -> "지형도"
-        MapType.Satellite -> "위성"
-        MapType.NaviHybrid -> "네비게이션 위성"
-        MapType.None -> "없음"
+        MapType.Basic -> stringResource(id = R.string.map_basic)
+        MapType.Hybrid -> stringResource(id = R.string.map_hybrid)
+        MapType.Navi -> stringResource(id = R.string.map_navi)
+        MapType.Terrain -> stringResource(id = R.string.map_terrain)
+        MapType.Satellite -> stringResource(id = R.string.map_satellite)
+        MapType.NaviHybrid -> stringResource(id = R.string.map_navi_hybrid)
+        MapType.None -> stringResource(id = R.string.map_none)
     }
 }
 
@@ -83,14 +86,18 @@ fun MapScreen(
     onNextButtonClicked: (Int) -> Unit,
 ) {
     val uiState by viewModel.uiState.collectAsState()
+
+    viewModel.loadTombData()
+
+
     MapItemScreen(
         modifier = modifier,
         uiState = uiState,
         onClick = { tomb ->
-            Timber.d("톰브 클릭 !!")
-            viewModel.toggleWindowVisible(tomb.key)
+            viewModel.toggleTombPopupWindowVisibility(tomb.key)
         },
-        onDetailClick = onNextButtonClicked
+        onDetailClick = onNextButtonClicked,
+        onBackEvent = { viewModel.onBackEvent() }
     )
 }
 
@@ -101,6 +108,7 @@ fun MapItemScreen(
     uiState: MapUiState,
     onClick: (TombEntity) -> Unit,
     onDetailClick: (Int) -> Unit,
+    onBackEvent: () -> Boolean
 ) {
 
     var mapState by rememberSaveable(stateSaver = naviMapSaver) { mutableStateOf(MapType.Satellite) }
@@ -109,6 +117,7 @@ fun MapItemScreen(
         Box(
             modifier = Modifier
                 .fillMaxWidth()
+                .fillMaxHeight()
                 .padding(16.dp),
             contentAlignment = Alignment.Center // 수평 및 수직 중앙 정렬
         ) {
@@ -119,15 +128,19 @@ fun MapItemScreen(
 
     val cameraPositionState = rememberCameraPositionState(
         init = {
-            position = CameraPosition(LatLng(36.615743, 128.352462), 16.0)
+            position = CameraPosition(LatLng(36.615743, 128.352462), 14.0)
         }
     )
 
+    val context = LocalContext.current
+    val exitMessage = stringResource(R.string.toast_exit)
     BackOnPressed(
-        tempTomb = uiState.tempTomb,
-        onClick = onClick
-    )
-
+        uiState = uiState,
+        onClick = onClick,
+        onBackEvent = onBackEvent,
+    ) {
+        Toast.makeText(context, exitMessage, Toast.LENGTH_SHORT).show()
+    }
 
     Box(
         modifier = modifier.fillMaxSize()
@@ -146,14 +159,14 @@ fun MapItemScreen(
             ),
             onMapClick = { _, _ ->
                 Timber.d("맵 클릭 !!")
-                uiState.tempTomb.firstOrNull { it.isWindowVisible }?.let {
+                uiState.tombs.firstOrNull { it.isWindowVisible }?.let {
                     onClick(it.tomb)
                 }
             }
         ) {
-            uiState.tempTomb.map { tempTomb ->
+            uiState.tombs.map { tempTomb ->
                 GpWindow(
-                    tempTomb = tempTomb,
+                    tomb = tempTomb,
                     onClick = onClick,
                     onDetailClick = onDetailClick
                 )
@@ -173,26 +186,23 @@ fun MapItemScreen(
 
 @Composable
 fun BackOnPressed(
-    tempTomb: List<TempTomb> = emptyList(),
+    uiState: MapUiState,
+    onBackEvent: () -> Boolean,
     onClick: (TombEntity) -> Unit,
+    onExitMessage: () -> Unit
 ) {
     val context = LocalContext.current
-    var backPressedState by remember { mutableStateOf(true) }
-    var backPressedTime = 0L
 
-    BackHandler(enabled = backPressedState) {
-        for (tomb in tempTomb) {
-            if (tomb.isWindowVisible) {
-                onClick(tomb.tomb)
-                return@BackHandler
-            }
+    BackHandler(enabled = true) {
+        uiState.tombs.firstOrNull { it.isWindowVisible }?.let {
+            onClick(it.tomb)
+            return@BackHandler
         }
-        if(System.currentTimeMillis() - backPressedTime <= 400L) {
+
+        if(onBackEvent()) {
             (context as Activity).finish()
-        } else {
-            backPressedState = true
-            Toast.makeText(context, "한 번 더 누르시면 앱이 종료됩니다.", Toast.LENGTH_SHORT).show()
+        }else {
+            onExitMessage()
         }
-        backPressedTime = System.currentTimeMillis()
     }
 }
