@@ -1,11 +1,18 @@
+import java.util.Properties
+
+val properties =
+    Properties().apply {
+        load(project.rootProject.file("local.properties").inputStream())
+    }
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
     kotlin("kapt")
     alias(libs.plugins.hilt)
+    alias(libs.plugins.ktlint)
 }
-
 android {
     namespace = "jeonghwan.app.gpa"
     compileSdk = 35
@@ -18,6 +25,7 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        manifestPlaceholders["NAVER_CLIENT_ID"] = properties["naver_api_key"] as String
     }
 
     buildTypes {
@@ -67,6 +75,11 @@ dependencies {
     kapt(libs.hilt.compiler)
     implementation(libs.androidx.hilt.navigation.compose)
 
-
-
+    implementation(libs.naver.map)
+    implementation(libs.play.services.location)
+    implementation(libs.naver.map.location)
+    // testing
+    testImplementation(libs.mockk)
+    implementation(libs.kotlinx.coroutines.test)
+    androidTestImplementation(libs.mockk.android)
 }

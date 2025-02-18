@@ -10,15 +10,14 @@ import androidx.compose.ui.Modifier
 fun PersonDetailScreen(
     modifier: Modifier = Modifier,
     personKey: Int,
-    onFavoriteButtonClicked: (Int) -> Unit
+    onFavoriteButtonClicked: (Int) -> Unit,
 ) {
     Scaffold(
-        modifier = modifier
+        modifier = modifier,
     ) { innerPadding ->
         Text(
             modifier = modifier.padding(innerPadding),
-            text = "Person Detail Screen: $personKey"
+            text = "Person Detail Screen: $personKey",
         )
     }
-
 }

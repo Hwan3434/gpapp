@@ -9,15 +9,14 @@ import androidx.compose.ui.Modifier
 @Composable
 fun TombDetailScreen(
     modifier: Modifier = Modifier,
-    tombKey: Int
+    tombKey: Int,
 ) {
     Scaffold(
-        modifier = modifier
+        modifier = modifier,
     ) { innerPadding ->
         Text(
             modifier = modifier.padding(innerPadding),
-            text = "Tomb Detail Screen: $tombKey"
+            text = "Tomb Detail Screen: $tombKey",
         )
     }
-
 }

@@ -1,6 +1,6 @@
 package jeonghwan.app.gpa.ui.screen.main
 
-import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
@@ -16,6 +16,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.Saver
 import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.saveable.rememberSaveableStateHolder
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -23,8 +24,7 @@ import androidx.compose.ui.res.stringResource
 import jeonghwan.app.gpa.R
 import jeonghwan.app.gpa.ui.screen.navi.favorite.FavoritePersonScreen
 import jeonghwan.app.gpa.ui.screen.navi.map.MapScreen
-import jeonghwan.app.gpa.ui.screen.navi.person.PersonListScreen
-import timber.log.Timber
+import jeonghwan.app.gpa.ui.screen.navi.person.ProxyPersonListScreen
 
 sealed class NaviItems(val route: String, private val titleResId: Int, val icon: ImageVector) {
     companion object {
@@ -32,14 +32,17 @@ sealed class NaviItems(val route: String, private val titleResId: Int, val icon:
         const val PERSON = "PERSON"
         const val FAVORITE = "FAVORITE"
     }
+
     data object Map : NaviItems(MAP, R.string.navi_map, Icons.Filled.LocationOn) {
         @Composable
         override fun GetScreen(
             modifier: Modifier,
             onNextButtonClicked: ((Int) -> Unit)?,
-            onFavoriteButtonClicked: ((Int) -> Unit)?
+            onFavoriteButtonClicked: ((Int) -> Unit)?,
         ) {
-            MapScreen()
+            MapScreen(
+                onNextButtonClicked = onNextButtonClicked!!,
+            )
         }
     }
 
@@ -48,22 +51,23 @@ sealed class NaviItems(val route: String, private val titleResId: Int, val icon:
         override fun GetScreen(
             modifier: Modifier,
             onNextButtonClicked: ((Int) -> Unit)?,
-            onFavoriteButtonClicked: ((Int) -> Unit)?
+            onFavoriteButtonClicked: ((Int) -> Unit)?,
         ) {
             assert(onNextButtonClicked != null)
             assert(onFavoriteButtonClicked != null)
-            PersonListScreen(
+            ProxyPersonListScreen(
                 onDetailButtonClicked = onNextButtonClicked!!,
-                onFavoriteButtonClicked = onFavoriteButtonClicked!!
+                onFavoriteButtonClicked = onFavoriteButtonClicked!!,
             )
         }
     }
+
     data object Favorite : NaviItems(FAVORITE, R.string.navi_favorite, Icons.Filled.Favorite) {
         @Composable
         override fun GetScreen(
             modifier: Modifier,
             onNextButtonClicked: ((Int) -> Unit)?,
-            onFavoriteButtonClicked: ((Int) -> Unit)?
+            onFavoriteButtonClicked: ((Int) -> Unit)?,
         ) {
             FavoritePersonScreen()
         }
@@ -73,59 +77,67 @@ sealed class NaviItems(val route: String, private val titleResId: Int, val icon:
     abstract fun GetScreen(
         modifier: Modifier,
         onNextButtonClicked: ((Int) -> Unit)?,
-        onFavoriteButtonClicked: ((Int) -> Unit)?
+        onFavoriteButtonClicked: ((Int) -> Unit)?,
     )
+
     @Composable
-    fun GetTab(selected: NaviItems, onClick: () -> Unit) {
+    fun GetTab(
+        selected: NaviItems,
+        onClick: () -> Unit,
+    ) {
         Tab(
             icon = { Icon(this.icon, contentDescription = null) },
             text = { Text(stringResource(this.titleResId)) },
             selected = selected == this,
-            onClick = onClick
+            onClick = onClick,
         )
     }
 }
 
-
-val naviItemsSaver = Saver<NaviItems, String>(
-    save = { it.route },
-    restore = { route ->
-        val tabs = listOf(NaviItems.Map, NaviItems.Person, NaviItems.Favorite)
-        tabs.find { it.route == route } ?: NaviItems.Map
-    }
-)
+private val naviItemsSaver =
+    Saver<NaviItems, String>(
+        save = { it.route },
+        restore = { route ->
+            val tabs = listOf(NaviItems.Map, NaviItems.Person, NaviItems.Favorite)
+            tabs.find { it.route == route } ?: NaviItems.Map
+        },
+    )
 
 @Composable
 fun MainScreen(
     modifier: Modifier = Modifier,
     onNextButtonClicked: (Int) -> Unit,
-    onFavoriteButtonClicked: (Int) -> Unit
+    onFavoriteButtonClicked: (Int) -> Unit,
 ) {
     var selectedTab by rememberSaveable(stateSaver = naviItemsSaver) { mutableStateOf(NaviItems.Map) }
     val tabs = listOf(NaviItems.Map, NaviItems.Person, NaviItems.Favorite)
+
+    val saveableStateHolder = rememberSaveableStateHolder()
+
     Scaffold(
         bottomBar = {
             TabRow(
                 selectedTabIndex = tabs.indexOf(selectedTab),
                 tabs = {
                     tabs.forEach { tab ->
-                        Timber.d("log: ${tab.route}")
                         tab.GetTab(
                             selectedTab,
                         ) {
                             selectedTab = tab
                         }
                     }
-                }
+                },
             )
-        }
-    )  { innerPadding ->
-        Column(modifier = modifier.padding(innerPadding)) {
-            selectedTab.GetScreen(
-                modifier,
-                onNextButtonClicked,
-                onFavoriteButtonClicked
-            )
+        },
+    ) { innerPadding ->
+        Box(modifier = modifier.padding(innerPadding)) {
+            saveableStateHolder.SaveableStateProvider(key = selectedTab.route) {
+                selectedTab.GetScreen(
+                    modifier,
+                    onNextButtonClicked,
+                    onFavoriteButtonClicked,
+                )
+            }
         }
     }
 }
