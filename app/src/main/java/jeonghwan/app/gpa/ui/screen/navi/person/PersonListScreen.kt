@@ -33,10 +33,7 @@ fun PersonListScreen(
     LaunchedEffect(listState) {
         snapshotFlow { listState.layoutInfo.visibleItemsInfo.lastOrNull()?.index }
             .collect { lastVisibleItemIndex ->
-                if (uiState.isLastPage || uiState.isLoading) {
-                    return@collect
-                }
-                if (lastVisibleItemIndex == uiState.personData.lastIndex) {
+                if (lastVisibleItemIndex == uiState.personData.count()) {
                     onLoadPage()
                 }
             }

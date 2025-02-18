@@ -14,10 +14,17 @@ fun ProxyPersonListScreen(
     onFavoriteButtonClicked: (Int) -> Unit,
 ) {
     val uiState by viewModel.uiState.collectAsState()
+
+    if (uiState.personData.isEmpty() && !uiState.isLoading && !uiState.isLastPage) {
+        viewModel.loadPaging()
+    }
+
     PersonListScreen(
         modifier = modifier,
         uiState = uiState,
-        onLoadPage = { viewModel.loadPaging() },
+        onLoadPage = {
+            viewModel.loadPaging()
+        },
         onDetailButtonClicked = onDetailButtonClicked,
         onFavoriteButtonClicked = onFavoriteButtonClicked,
     )

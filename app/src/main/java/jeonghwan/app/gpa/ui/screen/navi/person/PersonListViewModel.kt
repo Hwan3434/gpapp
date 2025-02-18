@@ -6,7 +6,6 @@ import com.google.firebase.firestore.DocumentSnapshot
 import dagger.hilt.android.lifecycle.HiltViewModel
 import jeonghwan.app.entity.PersonEntity
 import jeonghwan.app.modules.di.usecase.PersonUseCaseInterface
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
@@ -30,20 +29,14 @@ class PersonListViewModel
 
         private var lastVisibleDocument: DocumentSnapshot? = null
 
-        init {
-            loadPaging()
-        }
-
         fun loadPaging() {
             if (_uiState.value.isLoading || _uiState.value.isLastPage) {
                 return
-            } // 마지막 페이지면 로드하지 않음
+            }
 
             _uiState.value = _uiState.value.copy(isLoading = true)
 
             viewModelScope.launch {
-                delay(2_000) // 1초 지연
-
                 val result = personUseCase.getPersonPaging(lastVisibleDocument)
                 _uiState.value =
                     when {
