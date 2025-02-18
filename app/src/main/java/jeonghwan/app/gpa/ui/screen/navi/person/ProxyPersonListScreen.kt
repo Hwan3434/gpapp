@@ -22,9 +22,7 @@ fun ProxyPersonListScreen(
     PersonListScreen(
         modifier = modifier,
         uiState = uiState,
-        onLoadPage = {
-            viewModel.loadPaging()
-        },
+        onLoadPage = viewModel::loadPaging,
         onDetailButtonClicked = onDetailButtonClicked,
         onFavoriteButtonClicked = onFavoriteButtonClicked,
     )

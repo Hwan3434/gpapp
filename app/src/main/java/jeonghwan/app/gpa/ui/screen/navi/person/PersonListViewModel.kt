@@ -53,14 +53,12 @@ class PersonListViewModel
                                 isLastPage = lastVisibleDocument == null,
                             )
                         }
-
                         result.isFailure -> {
                             _uiState.value.copy(
                                 isLoading = false,
                                 errorMessage = result.exceptionOrNull()?.message,
                             )
                         }
-
                         else -> {
                             _uiState.value.copy(
                                 isLoading = false,
