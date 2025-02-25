@@ -31,6 +31,9 @@ play-services-location = "21.0.1"
 
 ktlint = "12.1.2"
 
+room = "2.6.1"
+pagingComposeAndroid = "3.3.6"
+
 
 
 [libraries]
@@ -73,6 +76,12 @@ naver-map = { module = "io.github.fornewid:naver-map-compose", version.ref = "na
 play-services-location = { module = "com.google.android.gms:play-services-location", version.ref = "play-services-location" }
 naver-map-location = { module = "io.github.fornewid:naver-map-location", version.ref = "play-services-location" }
 
+# Room
+room-runtime = { module = "androidx.room:room-runtime", version.ref = "room" }
+room-ktx = { module = "androidx.room:room-ktx", version.ref = "room" }
+room-paging = { module = "androidx.room:room-paging", version.ref = "room" }
+room-compiler = { module = "androidx.room:room-compiler", version.ref = "room" }
+androidx-paging-compose-android = { group = "androidx.paging", name = "paging-compose-android", version.ref = "pagingComposeAndroid" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

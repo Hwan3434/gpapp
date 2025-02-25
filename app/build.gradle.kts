@@ -12,6 +12,7 @@ plugins {
     kotlin("kapt")
     alias(libs.plugins.hilt)
     alias(libs.plugins.ktlint)
+    alias(libs.plugins.ksp)
 }
 android {
     namespace = "jeonghwan.app.gpa"
@@ -82,4 +83,10 @@ dependencies {
     testImplementation(libs.mockk)
     implementation(libs.kotlinx.coroutines.test)
     androidTestImplementation(libs.mockk.android)
+
+    implementation(libs.room.runtime)
+    implementation(libs.room.ktx)
+    ksp(libs.room.compiler)
+    implementation(libs.room.paging)
+    implementation(libs.androidx.paging.compose.android)
 }

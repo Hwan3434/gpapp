@@ -57,7 +57,6 @@ sealed class NaviItems(val route: String, private val titleResId: Int, val icon:
             assert(onFavoriteButtonClicked != null)
             ProxyPersonListScreen(
                 onDetailButtonClicked = onNextButtonClicked!!,
-                onFavoriteButtonClicked = onFavoriteButtonClicked!!,
             )
         }
     }

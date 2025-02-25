@@ -18,14 +18,16 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import jeonghwan.app.entity.GenderType
 import jeonghwan.app.entity.PersonEntity
+import timber.log.Timber
 
 @Composable
 fun PersonListScreen(
     modifier: Modifier = Modifier,
     uiState: PersonUiState,
+    favorite: (PersonEntity) -> Boolean,
     onLoadPage: () -> Unit,
     onDetailButtonClicked: (Int) -> Unit,
-    onFavoriteButtonClicked: (Int) -> Unit,
+    onFavoriteButtonClicked: (PersonEntity) -> Unit,
 ) {
     val listState = rememberLazyListState()
 
@@ -49,10 +51,13 @@ fun PersonListScreen(
             state = listState,
         ) {
             items(uiState.personData) { person ->
+                val favoriteState = favorite(person)
+                Timber.d("${person.name} / favoriteState :: $favoriteState")
                 PersonItem(
                     person = person,
+                    isFavorite = favoriteState,
                     onDetailButtonClicked = onDetailButtonClicked,
-                    onFavoriteButtonClicked = onFavoriteButtonClicked,
+                    onToggleFavorite = onFavoriteButtonClicked,
                 )
             }
 
@@ -118,6 +123,7 @@ fun PreviewPersonListScreen() {
     PersonListScreen(
         uiState = uiState,
         onLoadPage = {},
+        favorite = { false },
         onDetailButtonClicked = {},
         onFavoriteButtonClicked = {},
     )
