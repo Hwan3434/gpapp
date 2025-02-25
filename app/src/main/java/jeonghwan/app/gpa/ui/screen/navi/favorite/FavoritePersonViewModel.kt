@@ -19,7 +19,7 @@ data class FavoritePersonUiState(
 class FavoritePersonViewModel
     @Inject
     constructor(
-        private val personUseCase: PersonUseCaseInterface,
+        personUseCase: PersonUseCaseInterface,
     ) : ViewModel() {
         private val _uiState = MutableStateFlow(FavoritePersonUiState())
         val uiState: StateFlow<FavoritePersonUiState> = _uiState
