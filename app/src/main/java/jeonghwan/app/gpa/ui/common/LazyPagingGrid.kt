@@ -41,7 +41,7 @@ import androidx.paging.compose.LazyPagingItems
 @Composable
 fun <T : Any> LazyPagingGrid(
     lazyPagingItems: LazyPagingItems<T>,
-    compose: @Composable (T) -> Unit,
+    itemContent: @Composable (T) -> Unit,
 ) {
     if (lazyPagingItems.itemCount == 0) {
         EmptyView()
@@ -77,66 +77,65 @@ fun <T : Any> LazyPagingGrid(
     ) {
         LazyVerticalStaggeredGrid(
             state = scrollState,
-            modifier = Modifier.weight(1f),
+            modifier = Modifier
+                .weight(1f),
             columns = StaggeredGridCells.Fixed(2),
             verticalItemSpacing = 4.dp,
             horizontalArrangement = Arrangement.spacedBy(4.dp),
         ) {
             items(lazyPagingItems.itemCount) { index ->
                 lazyPagingItems[index]?.let { item ->
-                    compose(item)
+                    itemContent(item)
                 }
             }
         }
 
-        lazyPagingItems.apply {
-            when (loadState.append) {
-                is LoadState.Loading -> {
-                    Box(
-                        modifier =
-                            Modifier
-                                .fillMaxWidth()
-                                .padding(16.dp),
-                        contentAlignment = Alignment.Center,
-                    ) {
-                        CircularProgressIndicator()
-                    }
+        when(lazyPagingItems.loadState.append) {
+            is LoadState.Loading -> {
+                Box(
+                    modifier =
+                    Modifier
+                        .fillMaxWidth()
+                        .padding(16.dp),
+                    contentAlignment = Alignment.Center,
+                ) {
+                    CircularProgressIndicator()
                 }
+            }
 
-                is LoadState.Error -> {
-                    Box(
-                        modifier =
-                            Modifier
-                                .fillMaxWidth()
-                                .padding(16.dp),
-                        contentAlignment = Alignment.Center,
-                    ) {
-                        Text(
-                            "Error",
-                            color = Color.Red,
-                        )
-                    }
+            is LoadState.Error -> {
+                Box(
+                    modifier =
+                    Modifier
+                        .fillMaxWidth()
+                        .padding(16.dp),
+                    contentAlignment = Alignment.Center,
+                ) {
+                    Text(
+                        "Error",
+                        color = Color.Red,
+                    )
                 }
+            }
 
-                is LoadState.NotLoading -> {
-                    if (loadState.append.endOfPaginationReached) {
-                        Spacer(modifier = Modifier.height(16.dp))
-                        Text(
-                            "No more data",
-                            modifier =
-                                Modifier
-                                    .fillMaxWidth()
-                                    .background(
-                                        color = Color.LightGray,
-                                        shape = RoundedCornerShape(8.dp),
-                                    )
-                                    .padding(16.dp),
-                            textAlign = TextAlign.Center,
-                            fontWeight = FontWeight.Bold,
-                            fontSize = 18.sp,
-                            color = Color.DarkGray,
-                        )
-                    }
+            is LoadState.NotLoading -> {
+                if (lazyPagingItems.loadState.append.endOfPaginationReached) {
+                    Spacer(modifier = Modifier.height(16.dp))
+                    Text(
+                        "No more data",
+                        modifier =
+                        Modifier
+                            .fillMaxWidth()
+                            .background(
+                                color = Color.LightGray,
+                                shape = RoundedCornerShape(8.dp),
+                            )
+                            .padding(16.dp),
+                        textAlign = TextAlign.Center,
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 18.sp,
+                        color = Color.DarkGray,
+                    )
                 }
             }
         }

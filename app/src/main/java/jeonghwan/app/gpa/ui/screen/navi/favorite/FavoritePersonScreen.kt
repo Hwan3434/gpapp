@@ -10,7 +10,9 @@ import jeonghwan.app.entity.PersonEntity
 import jeonghwan.app.gpa.ui.common.LazyPagingGrid
 
 @Composable
-fun FavoritePersonScreen(viewModel: FavoritePersonViewModel = hiltViewModel()) {
+fun FavoritePersonScreen(
+    viewModel: FavoritePersonViewModel = hiltViewModel()
+) {
     val uiState by viewModel.uiState.collectAsState()
     val pagedFavorites = viewModel.personFavorites.collectAsLazyPagingItems()
 

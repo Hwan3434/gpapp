@@ -73,7 +73,7 @@ fun FavoriteItem(person: PersonEntity) {
 
             // 생존 여부
             Text(
-                text = "Alive: ${if (person.alive) "Yes" else "No"}",
+                text = "Alive: ${if (person.alive) "Alive" else "Deceased"}",
                 fontSize = 16.sp,
                 fontWeight = FontWeight.Medium,
                 color = if (person.alive) Color(0xFF2E7D32) else Color(0xFFC62828),

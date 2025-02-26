@@ -53,8 +53,6 @@ sealed class NaviItems(val route: String, private val titleResId: Int, val icon:
             onNextButtonClicked: ((Int) -> Unit)?,
             onFavoriteButtonClicked: ((Int) -> Unit)?,
         ) {
-            assert(onNextButtonClicked != null)
-            assert(onFavoriteButtonClicked != null)
             ProxyPersonListScreen(
                 onDetailButtonClicked = onNextButtonClicked!!,
             )

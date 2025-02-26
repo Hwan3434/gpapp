@@ -23,7 +23,7 @@ class PersonUseCaseImpl(
                 key = person.key,
                 alive = person.alive,
                 name = person.name,
-                genderType = person.genderType != GenderType.Male,
+                genderType = person.genderType == GenderType.Female,
                 family = person.family
             )
         )
