@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.MailOutline
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -33,8 +34,9 @@ import jeonghwan.app.gpa.R
 fun PersonItem(
     modifier: Modifier = Modifier,
     person: PersonEntity,
+    isFavorite: Boolean = false,
+    onToggleFavorite: (PersonEntity) -> Unit,
     onDetailButtonClicked: (Int) -> Unit,
-    onFavoriteButtonClicked: (Int) -> Unit,
 ) {
     Card(
         modifier =
@@ -74,9 +76,16 @@ fun PersonItem(
                 Text("$fullFamilyName $generator")
             }
             IconButton(
-                onClick = { onFavoriteButtonClicked(person.key) },
+                onClick = { onToggleFavorite(person) },
             ) {
-                Icon(Icons.Default.Star, contentDescription = "Star", tint = Color.Yellow)
+                Icon(
+                    if (isFavorite) {
+                        Icons.Default.Star
+                    } else {
+                        Icons.Default.MailOutline
+                    },
+                    contentDescription = "Star",
+                )
             }
         }
     }
@@ -103,7 +112,7 @@ fun MaleItemPreview() {
                 mather = 0,
             ),
         onDetailButtonClicked = {},
-        onFavoriteButtonClicked = {},
+        onToggleFavorite = {},
     )
 }
 
@@ -128,7 +137,7 @@ fun FemalePreview() {
                 mather = 0,
             ),
         onDetailButtonClicked = {},
-        onFavoriteButtonClicked = {},
+        onToggleFavorite = {},
     )
 }
 

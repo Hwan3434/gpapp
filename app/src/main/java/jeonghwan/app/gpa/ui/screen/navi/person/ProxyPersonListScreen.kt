@@ -11,9 +11,9 @@ fun ProxyPersonListScreen(
     modifier: Modifier = Modifier,
     viewModel: PersonListViewModel = hiltViewModel(),
     onDetailButtonClicked: (Int) -> Unit,
-    onFavoriteButtonClicked: (Int) -> Unit,
 ) {
     val uiState by viewModel.uiState.collectAsState()
+    val favoriteSet by viewModel.favoriteFlow.collectAsState(initial = emptySet())
 
     if (uiState.personData.isEmpty() && !uiState.isLoading && !uiState.isLastPage) {
         viewModel.loadPaging()
@@ -22,8 +22,9 @@ fun ProxyPersonListScreen(
     PersonListScreen(
         modifier = modifier,
         uiState = uiState,
+        favorite = favoriteSet::contains,
         onLoadPage = viewModel::loadPaging,
         onDetailButtonClicked = onDetailButtonClicked,
-        onFavoriteButtonClicked = onFavoriteButtonClicked,
+        onFavoriteButtonClicked = viewModel::toggleFavorite,
     )
 }

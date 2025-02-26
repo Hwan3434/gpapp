@@ -6,8 +6,10 @@ import com.google.firebase.firestore.DocumentSnapshot
 import dagger.hilt.android.lifecycle.HiltViewModel
 import jeonghwan.app.entity.PersonEntity
 import jeonghwan.app.modules.di.usecase.PersonUseCaseInterface
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -28,6 +30,19 @@ class PersonListViewModel
         val uiState: StateFlow<PersonUiState> = _uiState
 
         private var lastVisibleDocument: DocumentSnapshot? = null
+        val favoriteFlow: Flow<Set<PersonEntity>> =
+            personUseCase.getFavorites()
+                .map { favorites -> favorites.toSet() }
+
+        fun toggleFavorite(person: PersonEntity) {
+            viewModelScope.launch {
+                if (personUseCase.isFavorite(person.key)) {
+                    personUseCase.delete(person.key)
+                } else {
+                    personUseCase.insert(person)
+                }
+            }
+        }
 
         fun loadPaging() {
             if (_uiState.value.isLoading || _uiState.value.isLastPage) {

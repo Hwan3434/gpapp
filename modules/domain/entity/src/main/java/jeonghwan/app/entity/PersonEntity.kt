@@ -1,5 +1,6 @@
 package jeonghwan.app.entity
 
+
 data class PersonEntity(
     val key: Int,
     val spouse: Int?,
@@ -14,7 +15,15 @@ data class PersonEntity(
     val dateDeath: Long?,
     val father: Int?,
     val mather: Int?,
-)
+) {
+    override fun equals(other: Any?): Boolean {
+        if(other !is PersonEntity) return false
+        return key == other.key
+    }
+    override fun hashCode(): Int {
+        return key.hashCode()
+    }
+}
 
 // 성별 타입
 enum class GenderType {

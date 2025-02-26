@@ -6,6 +6,7 @@ import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import jeonghwan.app.domain.PersonRepositoryInterface
 import jeonghwan.app.domain.TombRepositoryInterface
+import jeonghwan.app.modules.data.db.PersonFavoriteDatasource
 import jeonghwan.app.modules.di.usecase.PersonUseCaseImpl
 import jeonghwan.app.modules.di.usecase.PersonUseCaseInterface
 import jeonghwan.app.modules.di.usecase.TombUseCaseImpl
@@ -19,9 +20,13 @@ class UseCaseDI {
     @Provides
     @Singleton
     fun providePersonUseCase(
-        personRepositoryInterface: PersonRepositoryInterface
+        personRepositoryInterface: PersonRepositoryInterface,
+        personFavoriteDatasource: PersonFavoriteDatasource
     ): PersonUseCaseInterface {
-        return PersonUseCaseImpl(personRepository = personRepositoryInterface)
+        return PersonUseCaseImpl(
+            personRepository = personRepositoryInterface,
+            personFavoriteDatasource = personFavoriteDatasource
+        )
     }
 
 
