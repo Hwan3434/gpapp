@@ -1,6 +1,8 @@
-package jeonghwan.app.entity
+package jeonghwan.app.domain.model
 
+import androidx.compose.runtime.Immutable
 
+@Immutable
 data class PersonEntity(
     val key: Int,
     val spouse: Int?,

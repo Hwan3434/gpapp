@@ -2,7 +2,7 @@ package jeonghwan.app.modules.di.repository
 
 import com.google.firebase.firestore.DocumentSnapshot
 import jeonghwan.app.domain.PersonRepositoryInterface
-import jeonghwan.app.entity.PersonEntity
+import jeonghwan.app.domain.model.PersonEntity
 import jeonghwan.app.modules.data.DataSourceInterface
 import jeonghwan.app.modules.data.model.PersonModel
 import jeonghwan.app.modules.di.common.toEntity

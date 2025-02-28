@@ -1,6 +1,6 @@
 package jeonghwan.app.domain
 
-import jeonghwan.app.entity.TombEntity
+import jeonghwan.app.domain.model.TombEntity
 
 interface TombRepositoryInterface {
     suspend fun getTombAll(): List<TombEntity>

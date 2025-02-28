@@ -1,4 +1,4 @@
-package jeonghwan.app.entity
+package jeonghwan.app.domain.model
 
 data class TombEntity (
     val key: Int,

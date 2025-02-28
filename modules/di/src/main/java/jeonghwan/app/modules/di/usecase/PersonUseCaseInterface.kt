@@ -2,7 +2,7 @@ package jeonghwan.app.modules.di.usecase
 
 import androidx.paging.PagingData
 import com.google.firebase.firestore.DocumentSnapshot
-import jeonghwan.app.entity.PersonEntity
+import jeonghwan.app.domain.model.PersonEntity
 import kotlinx.coroutines.flow.Flow
 
 interface PersonUseCaseInterface {

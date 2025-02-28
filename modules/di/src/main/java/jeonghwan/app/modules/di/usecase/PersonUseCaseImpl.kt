@@ -1,13 +1,14 @@
 package jeonghwan.app.modules.di.usecase
 
+import android.util.Log
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.map
 import com.google.firebase.firestore.DocumentSnapshot
 import jeonghwan.app.domain.PersonRepositoryInterface
-import jeonghwan.app.entity.GenderType
-import jeonghwan.app.entity.PersonEntity
+import jeonghwan.app.domain.model.GenderType
+import jeonghwan.app.domain.model.PersonEntity
 import jeonghwan.app.modules.data.db.PersonData
 import jeonghwan.app.modules.data.db.PersonFavoriteDatasource
 import kotlinx.coroutines.flow.Flow
@@ -39,7 +40,9 @@ class PersonUseCaseImpl(
                 personFavoriteDatasource.getPagedFavorites()
             }
         ).flow.map { pagingData ->
+            Log.e("PersonUseCaseImpl", "getPagedFavorites")
             pagingData.map {
+                Log.e("PersonUseCaseImpl", "person : ${it.name}")
                 PersonEntity(
                     key = it.key,
                     alive = it.alive,

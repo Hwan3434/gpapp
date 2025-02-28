@@ -41,6 +41,12 @@ android {
     }
     kotlinOptions {
         jvmTarget = "11"
+        freeCompilerArgs +=
+            listOf(
+                // Compose 디버깅
+                "-P",
+                "plugin:androidx.compose.compiler.plugins.kotlin:reportsDestination=${rootProject.file(".").absolutePath}/compose_compile",
+            )
     }
     buildFeatures {
         compose = true
@@ -49,7 +55,7 @@ android {
 
 dependencies {
     implementation(project(":modules:di"))
-    implementation(project(":modules:domain:entity"))
+    implementation(project(":modules:domain"))
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)

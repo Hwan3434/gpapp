@@ -19,8 +19,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import jeonghwan.app.entity.GenderType
-import jeonghwan.app.entity.PersonEntity
+import jeonghwan.app.domain.model.GenderType
+import jeonghwan.app.domain.model.PersonEntity
 
 @Composable
 fun FavoriteItem(person: PersonEntity) {

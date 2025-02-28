@@ -6,13 +6,10 @@ import androidx.compose.runtime.getValue
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
-import jeonghwan.app.entity.PersonEntity
 import jeonghwan.app.gpa.ui.common.LazyPagingGrid
 
 @Composable
-fun FavoritePersonScreen(
-    viewModel: FavoritePersonViewModel = hiltViewModel()
-) {
+fun FavoritePersonScreen(viewModel: FavoritePersonViewModel = hiltViewModel()) {
     val uiState by viewModel.uiState.collectAsState()
     val pagedFavorites = viewModel.personFavorites.collectAsLazyPagingItems()
 
@@ -25,7 +22,7 @@ fun FavoritePersonScreen(
 @Composable
 fun FavoriteUiScreen(
     state: FavoritePersonUiState,
-    lazyPagingItems: LazyPagingItems<PersonEntity>,
+    lazyPagingItems: LazyPagingItems<jeonghwan.app.domain.model.PersonEntity>,
 ) {
     LazyPagingGrid(
         lazyPagingItems = lazyPagingItems,

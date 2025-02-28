@@ -31,7 +31,7 @@ import com.naver.maps.map.compose.MapType
 import com.naver.maps.map.compose.MapUiSettings
 import com.naver.maps.map.compose.NaverMap
 import com.naver.maps.map.compose.rememberCameraPositionState
-import jeonghwan.app.entity.TombEntity
+import jeonghwan.app.domain.model.TombEntity
 import jeonghwan.app.gpa.R
 import timber.log.Timber
 

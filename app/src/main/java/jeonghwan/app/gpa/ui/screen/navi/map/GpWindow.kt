@@ -22,8 +22,8 @@ import com.naver.maps.geometry.LatLng
 import com.naver.maps.map.compose.ExperimentalNaverMapApi
 import com.naver.maps.map.compose.MarkerComposable
 import com.naver.maps.map.compose.MarkerState
-import jeonghwan.app.entity.PersonEntity
-import jeonghwan.app.entity.TombEntity
+import jeonghwan.app.domain.model.PersonEntity
+import jeonghwan.app.domain.model.TombEntity
 import jeonghwan.app.gpa.R
 import jeonghwan.app.modules.di.common.toFormattedDate
 

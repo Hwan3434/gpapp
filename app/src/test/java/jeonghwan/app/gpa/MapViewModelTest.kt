@@ -3,10 +3,10 @@ package jeonghwan.app.gpa
 
 import io.mockk.coEvery
 import io.mockk.mockk
-import jeonghwan.app.entity.GenderType
-import jeonghwan.app.entity.GpGeoPoint
-import jeonghwan.app.entity.PersonEntity
-import jeonghwan.app.entity.TombEntity
+import jeonghwan.app.domain.model.GenderType
+import jeonghwan.app.domain.model.GpGeoPoint
+import jeonghwan.app.domain.model.PersonEntity
+import jeonghwan.app.domain.model.TombEntity
 import jeonghwan.app.gpa.ui.screen.navi.map.MapViewModel
 import jeonghwan.app.modules.di.usecase.PersonUseCaseInterface
 import jeonghwan.app.modules.di.usecase.TombUseCaseInterface

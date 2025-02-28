@@ -1,11 +1,11 @@
 package jeonghwan.app.modules.di.common
 
-import jeonghwan.app.entity.GenderType
-import jeonghwan.app.entity.GpGeoPoint
-import jeonghwan.app.entity.PersonEntity
+import jeonghwan.app.domain.model.GenderType
+import jeonghwan.app.domain.model.GpGeoPoint
+import jeonghwan.app.domain.model.PersonEntity
 import jeonghwan.app.modules.data.model.PersonModel
 import jeonghwan.app.modules.data.model.TombModel
-import jeonghwan.app.entity.TombEntity
+import jeonghwan.app.domain.model.TombEntity
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale

@@ -108,7 +108,6 @@ fun MainScreen(
 ) {
     var selectedTab by rememberSaveable(stateSaver = naviItemsSaver) { mutableStateOf(NaviItems.Map) }
     val tabs = listOf(NaviItems.Map, NaviItems.Person, NaviItems.Favorite)
-
     val saveableStateHolder = rememberSaveableStateHolder()
 
     Scaffold(

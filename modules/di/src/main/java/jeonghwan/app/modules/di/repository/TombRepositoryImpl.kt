@@ -4,7 +4,7 @@ import jeonghwan.app.domain.TombRepositoryInterface
 import jeonghwan.app.modules.data.DataSourceInterface
 import jeonghwan.app.modules.data.model.TombModel
 import jeonghwan.app.modules.di.common.toEntity
-import jeonghwan.app.entity.TombEntity
+import jeonghwan.app.domain.model.TombEntity
 
 class TombRepositoryImpl (
     private val firebase: DataSourceInterface

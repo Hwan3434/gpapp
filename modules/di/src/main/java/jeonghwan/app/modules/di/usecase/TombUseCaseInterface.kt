@@ -1,6 +1,6 @@
 package jeonghwan.app.modules.di.usecase
 
-import jeonghwan.app.entity.TombEntity
+import jeonghwan.app.domain.model.TombEntity
 
 interface TombUseCaseInterface {
     suspend fun getTombAll(): Result<List<TombEntity>>

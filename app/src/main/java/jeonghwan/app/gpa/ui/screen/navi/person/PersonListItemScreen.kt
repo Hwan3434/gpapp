@@ -25,16 +25,16 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import jeonghwan.app.entity.GenderType
-import jeonghwan.app.entity.PersonEntity
-import jeonghwan.app.entity.getFamilyName
+import jeonghwan.app.domain.model.GenderType
+import jeonghwan.app.domain.model.PersonEntity
+import jeonghwan.app.domain.model.getFamilyName
 import jeonghwan.app.gpa.R
 
 @Composable
 fun PersonItem(
     modifier: Modifier = Modifier,
     person: PersonEntity,
-    isFavorite: Boolean = false,
+    isFavorite: (PersonEntity) -> Boolean,
     onToggleFavorite: (PersonEntity) -> Unit,
     onDetailButtonClicked: (Int) -> Unit,
 ) {
@@ -79,7 +79,7 @@ fun PersonItem(
                 onClick = { onToggleFavorite(person) },
             ) {
                 Icon(
-                    if (isFavorite) {
+                    if (isFavorite(person)) {
                         Icons.Default.Star
                     } else {
                         Icons.Default.MailOutline
@@ -112,6 +112,7 @@ fun MaleItemPreview() {
                 mather = 0,
             ),
         onDetailButtonClicked = {},
+        isFavorite = { false },
         onToggleFavorite = {},
     )
 }
@@ -137,6 +138,7 @@ fun FemalePreview() {
                 mather = 0,
             ),
         onDetailButtonClicked = {},
+        isFavorite = { false },
         onToggleFavorite = {},
     )
 }

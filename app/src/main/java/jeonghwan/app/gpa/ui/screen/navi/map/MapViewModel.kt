@@ -4,9 +4,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import jeonghwan.app.entity.GenderType
-import jeonghwan.app.entity.PersonEntity
-import jeonghwan.app.entity.TombEntity
+import jeonghwan.app.domain.model.GenderType
+import jeonghwan.app.domain.model.PersonEntity
+import jeonghwan.app.domain.model.TombEntity
 import jeonghwan.app.modules.di.usecase.PersonUseCaseInterface
 import jeonghwan.app.modules.di.usecase.TombUseCaseInterface
 import kotlinx.coroutines.flow.MutableStateFlow
