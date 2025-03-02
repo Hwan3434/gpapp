@@ -53,11 +53,8 @@ sealed class NaviItems(val route: String, private val titleResId: Int, val icon:
             onNextButtonClicked: ((Int) -> Unit)?,
             onFavoriteButtonClicked: ((Int) -> Unit)?,
         ) {
-            assert(onNextButtonClicked != null)
-            assert(onFavoriteButtonClicked != null)
             ProxyPersonListScreen(
                 onDetailButtonClicked = onNextButtonClicked!!,
-                onFavoriteButtonClicked = onFavoriteButtonClicked!!,
             )
         }
     }
@@ -111,7 +108,6 @@ fun MainScreen(
 ) {
     var selectedTab by rememberSaveable(stateSaver = naviItemsSaver) { mutableStateOf(NaviItems.Map) }
     val tabs = listOf(NaviItems.Map, NaviItems.Person, NaviItems.Favorite)
-
     val saveableStateHolder = rememberSaveableStateHolder()
 
     Scaffold(

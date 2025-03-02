@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.MailOutline
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -24,17 +25,18 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import jeonghwan.app.entity.GenderType
-import jeonghwan.app.entity.PersonEntity
-import jeonghwan.app.entity.getFamilyName
+import jeonghwan.app.domain.model.GenderType
+import jeonghwan.app.domain.model.PersonEntity
+import jeonghwan.app.domain.model.getFamilyName
 import jeonghwan.app.gpa.R
 
 @Composable
 fun PersonItem(
     modifier: Modifier = Modifier,
     person: PersonEntity,
+    isFavorite: (PersonEntity) -> Boolean,
+    onToggleFavorite: (PersonEntity) -> Unit,
     onDetailButtonClicked: (Int) -> Unit,
-    onFavoriteButtonClicked: (Int) -> Unit,
 ) {
     Card(
         modifier =
@@ -74,9 +76,16 @@ fun PersonItem(
                 Text("$fullFamilyName $generator")
             }
             IconButton(
-                onClick = { onFavoriteButtonClicked(person.key) },
+                onClick = { onToggleFavorite(person) },
             ) {
-                Icon(Icons.Default.Star, contentDescription = "Star", tint = Color.Yellow)
+                Icon(
+                    if (isFavorite(person)) {
+                        Icons.Default.Star
+                    } else {
+                        Icons.Default.MailOutline
+                    },
+                    contentDescription = "Star",
+                )
             }
         }
     }
@@ -103,7 +112,8 @@ fun MaleItemPreview() {
                 mather = 0,
             ),
         onDetailButtonClicked = {},
-        onFavoriteButtonClicked = {},
+        isFavorite = { false },
+        onToggleFavorite = {},
     )
 }
 
@@ -128,7 +138,8 @@ fun FemalePreview() {
                 mather = 0,
             ),
         onDetailButtonClicked = {},
-        onFavoriteButtonClicked = {},
+        isFavorite = { false },
+        onToggleFavorite = {},
     )
 }
 

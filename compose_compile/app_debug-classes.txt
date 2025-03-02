@@ -1,0 +1,15 @@
+stable class Map {
+  <runtime stability> = Stable
+}
+stable class Person {
+  <runtime stability> = Stable
+}
+stable class Favorite {
+  <runtime stability> = Stable
+}
+stable class NaviItems {
+  stable val route: String
+  stable val titleResId: Int
+  stable val icon: ImageVector
+  <runtime stability> = Stable
+}

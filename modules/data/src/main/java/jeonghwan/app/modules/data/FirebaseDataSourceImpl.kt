@@ -2,7 +2,6 @@ package jeonghwan.app.modules.data
 
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
-import jeonghwan.app.entity.GpGeoPoint
 import jeonghwan.app.modules.data.model.PersonModel
 import jeonghwan.app.modules.data.model.TombModel
 import kotlinx.coroutines.tasks.await

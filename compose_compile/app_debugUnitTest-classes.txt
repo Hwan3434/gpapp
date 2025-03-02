@@ -1,0 +1,8 @@
+unstable class MapViewModelTest {
+  runtime var viewModel: MapViewModel
+  unstable val personUseCase: PersonUseCaseInterface
+  unstable val tombUseCase: TombUseCaseInterface
+  unstable val dummyTombEntity: TombEntity
+  stable val dummyPersonEntity: PersonEntity
+  <runtime stability> = Unstable
+}
