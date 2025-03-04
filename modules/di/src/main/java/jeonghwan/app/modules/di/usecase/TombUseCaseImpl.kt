@@ -14,7 +14,12 @@ class TombUseCaseImpl (
         }
     }
 
-    override suspend fun getTomb(key: Int): Result<TombEntity> {
-        TODO("Not yet implemented")
+    override suspend fun getTomb(key: Int): Result<TombEntity?> {
+        return try {
+            val tombEntity = tombRepository.getTomb(key)
+            Result.success(tombEntity)
+        }catch (e: Exception) {
+            Result.failure(e)
+        }
     }
 }

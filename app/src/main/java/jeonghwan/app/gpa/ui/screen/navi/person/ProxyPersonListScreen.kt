@@ -13,7 +13,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 fun ProxyPersonListScreen(
     modifier: Modifier = Modifier,
     viewModel: PersonListViewModel = hiltViewModel(),
-    onDetailButtonClicked: (Int) -> Unit,
+    goToPersonDetail: (Int) -> Unit,
 ) {
     val uiState by viewModel.uiState.collectAsState()
     val favoriteSet by viewModel.favoriteFlow.collectAsState(initial = emptySet())
@@ -45,6 +45,6 @@ fun ProxyPersonListScreen(
             favoriteSet.contains(it)
         },
         onToggleFavorite = viewModel::toggleFavorite,
-        onDetailScreen = onDetailButtonClicked,
+        onDetailScreen = goToPersonDetail,
     )
 }

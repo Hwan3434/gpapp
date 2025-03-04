@@ -109,7 +109,13 @@ class FirebaseDataSourceImpl (
                 .await()
 
             if (!querySnapshot.isEmpty) {
-                querySnapshot.documents[0].toObject(TombModel::class.java)
+                val doc = querySnapshot.documents.first()
+                val locationData = doc.get("location") as com.google.firebase.firestore.GeoPoint
+                val tomb: TombModel? = doc.toObject(TombModel::class.java)
+                if(tomb == null) return null
+                tomb.latitude = locationData.latitude
+                tomb.longitude = locationData.longitude
+                return tomb
             } else {
                 null
             }

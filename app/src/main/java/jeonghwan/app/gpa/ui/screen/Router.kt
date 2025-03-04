@@ -5,18 +5,24 @@ import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.ExitTransition
 import androidx.compose.animation.core.tween
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import com.naver.maps.map.compose.rememberCameraPositionState
 import jeonghwan.app.gpa.ui.screen.main.MainScreen
-import jeonghwan.app.gpa.ui.screen.navi.detail.PersonDetailScreen
+import jeonghwan.app.gpa.ui.screen.main.NaviItems
 import jeonghwan.app.gpa.ui.screen.navi.detail.TombDetailScreen
+import jeonghwan.app.gpa.ui.screen.navi.detail.person.PersonDetailScreen
 
 sealed class RouterItems(val route: String) {
-    data object Main : RouterItems("main")
+    data object Main : RouterItems("main") {
+        fun cratePath() = route
+    }
 
     data object PersonDetail : RouterItems("personDetail") {
         const val PARAM = "personKey"
@@ -34,10 +40,20 @@ sealed class RouterItems(val route: String) {
 }
 
 @Composable
-fun Router(modifier: Modifier = Modifier) {
+fun Router(
+    modifier: Modifier = Modifier,
+    routerViewModel: RouterViewModel = hiltViewModel(),
+) {
+    val tab = routerViewModel.tab
+    val cameraPositionState =
+        rememberCameraPositionState {
+            position = routerViewModel.cameraPosition
+        }
+
     val navController = rememberNavController()
 
     NavHost(
+        modifier = modifier,
         navController = navController,
         startDestination = RouterItems.Main.route,
         exitTransition = { ExitTransition.None },
@@ -48,11 +64,16 @@ fun Router(modifier: Modifier = Modifier) {
         composable(route = RouterItems.Main.route) {
             MainScreen(
                 modifier = modifier,
-                onNextButtonClicked = { personKey ->
+                selectedTab = tab,
+                cameraPositionState = cameraPositionState,
+                goToPersonDetail = { personKey ->
                     navController.navigate(RouterItems.PersonDetail.createPath(personKey))
                 },
                 onFavoriteButtonClicked = { tombKey ->
                     navController.navigate(RouterItems.TombDetail.createPath(tombKey))
+                },
+                onTab = {
+                    routerViewModel.updateTab(it)
                 },
             )
         }
@@ -78,10 +99,21 @@ fun Router(modifier: Modifier = Modifier) {
                 )
             },
         ) { backStackEntry ->
+            LaunchedEffect(routerViewModel.cameraPosition) {
+                cameraPositionState.position = routerViewModel.cameraPosition
+            }
             val personKey = backStackEntry.arguments!!.getInt(RouterItems.PersonDetail.PARAM)
             PersonDetailScreen(
                 modifier = modifier,
                 personKey = personKey,
+                goToMap = { key ->
+                    navController.popBackStack()
+                    routerViewModel.updateTab(NaviItems.Map)
+                    routerViewModel.updateCameraPositionByPersonKey(key)
+                },
+                goToPerson = { key ->
+                    navController.navigate(RouterItems.PersonDetail.createPath(key))
+                },
                 onFavoriteButtonClicked = { _ ->
                     TODO("Not yet implemented")
                 },

@@ -23,13 +23,14 @@ fun TestPersonListScreen(
                 .padding(16.dp),
         state = listState,
     ) {
-        items(items = uiState().personData, key = {
-            it.key
-        }) { person ->
+        items(
+            items = uiState().personData,
+            key = { it.key },
+        ) { person ->
             PersonItem(
                 person = person,
                 isFavorite = isFavorite,
-                onDetailButtonClicked = { },
+                onDetailButtonClicked = onDetailScreen,
                 onToggleFavorite = onToggleFavorite,
             )
         }

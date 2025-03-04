@@ -1,20 +1,11 @@
-restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun GetScreen(
-  unused stable modifier: Modifier
-  stable onNextButtonClicked: Function1<Int, Unit>?
-  unused stable onFavoriteButtonClicked: Function1<Int, Unit>?
-  unused stable <this>: Map
+restartable skippable scheme("[androidx.compose.ui.UiComposable, [androidx.compose.ui.UiComposable]]") fun LazyPagingGrid(
+  lazyPagingItems: LazyPagingItems<T>
+  stable itemContent: Function3<T, Composer, Int, Unit>
 )
-restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun GetScreen(
-  unused stable modifier: Modifier
-  stable onNextButtonClicked: Function1<Int, Unit>?
-  unused stable onFavoriteButtonClicked: Function1<Int, Unit>?
-  unused stable <this>: Person
-)
-restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun GetScreen(
-  unused stable modifier: Modifier
-  unused stable onNextButtonClicked: Function1<Int, Unit>?
-  unused stable onFavoriteButtonClicked: Function1<Int, Unit>?
-  unused stable <this>: Favorite
+restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun EmptyView()
+restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun Router(
+  stable modifier: Modifier? = @static Companion
+  unstable routerViewModel: RouterViewModel? = @dynamic hiltViewModel(null, null, $composer, 0, 0b0011)
 )
 restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun GetTab(
   stable selected: NaviItems
@@ -23,18 +14,96 @@ restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun GetTab(
 )
 restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun MainScreen(
   stable modifier: Modifier? = @static Companion
-  stable onNextButtonClicked: Function1<Int, Unit>
-  stable onFavoriteButtonClicked: Function1<Int, Unit>
+  stable selectedTab: NaviItems
+  cameraPositionState: CameraPositionState
+  stable goToPersonDetail: Function1<Int, Unit>
+  unused stable onFavoriteButtonClicked: Function1<Int, Unit>
+  stable onTab: Function1<NaviItems, Unit>
 )
+restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun TombDetailScreen(
+  stable modifier: Modifier? = @static Companion
+  stable tombKey: Int
+)
+restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun PersonDetailScreen(
+  stable modifier: Modifier? = @static Companion
+  stable personKey: Int
+  stable goToMap: Function1<Int, Unit>
+  unused stable goToPerson: Function1<Int, Unit>
+  unused stable onFavoriteButtonClicked: Function1<Int, Unit>
+)
+restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun FavoriteItem(
+  stable person: PersonEntity
+)
+restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun FavoritePersonScreen(
+  unstable viewModel: FavoritePersonViewModel? = @dynamic hiltViewModel(null, null, $composer, 0, 0b0011)
+)
+restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun FavoriteUiScreen(
+  unused stable state: FavoritePersonUiState
+  lazyPagingItems: LazyPagingItems<PersonEntity>
+)
+restartable scheme("[com.naver.maps.map.compose.NaverMapComposable]") fun GpWindow(
+  unstable tomb: TombDataModel
+  stable onClick: Function1<TombEntity, Unit>
+  stable onDetailClick: Function1<Int, Unit>
+)
+restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun GpWindowBox(
+  stable p: PersonEntity
+)
+restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun MapFloating(
+  stable modifier: Modifier
+  stable text: String
+  stable onClick: Function0<Unit>
+)
+restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun MapFloatingPreview()
+fun toKorean(
+  stable <this>: MapType
+): String
+restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun MapScreen(
+  stable modifier: Modifier? = @static Companion
+  cameraPositionState: CameraPositionState
+  unstable viewModel: MapViewModel? = @dynamic hiltViewModel(null, null, $composer, 0, 0b0011)
+  stable goToPersonDetail: Function1<Int, Unit>
+)
+restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun MapItemScreen(
+  stable modifier: Modifier
+  stable uiState: MapUiState
+  cameraPositionState: CameraPositionState
+  stable onClick: Function1<TombEntity, Unit>
+  stable onDetailClick: Function1<Int, Unit>
+  stable onBackEvent: Function0<Boolean>
+)
+restartable skippable fun BackOnPressed(
+  stable uiState: MapUiState
+  stable onBackEvent: Function0<Boolean>
+  stable onClick: Function1<TombEntity, Unit>
+  stable onExitMessage: Function0<Unit>
+)
+restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun PersonItem(
+  stable modifier: Modifier? = @static Companion
+  stable person: PersonEntity
+  stable isFavorite: Function1<PersonEntity, Boolean>
+  stable onToggleFavorite: Function1<PersonEntity, Unit>
+  stable onDetailButtonClicked: Function1<Int, Unit>
+)
+restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun MaleItemPreview()
+restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun FemalePreview()
+fun getGenerator(
+  stable <this>: PersonEntity
+): String
 restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun TestPersonListScreen(
   stable uiState: Function0<PersonUiState>
   stable listState: LazyListState
   stable isFavorite: Function1<PersonEntity, Boolean>
   stable onToggleFavorite: Function1<PersonEntity, Unit>
-  unused stable onDetailScreen: Function1<Int, Unit>
+  stable onDetailScreen: Function1<Int, Unit>
 )
 restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun ProxyPersonListScreen(
   unused stable modifier: Modifier? = @static Companion
-  viewModel: PersonListViewModel? = @dynamic hiltViewModel(null, null, $composer, 0, 0b0011)
-  stable onDetailButtonClicked: Function1<Int, Unit>
+  unstable viewModel: PersonListViewModel? = @dynamic hiltViewModel(null, null, $composer, 0, 0b0011)
+  stable goToPersonDetail: Function1<Int, Unit>
+)
+restartable skippable scheme("[0, [0]]") fun GpaTheme(
+  stable darkTheme: Boolean = @dynamic isSystemInDarkTheme($composer, 0)
+  stable dynamicColor: Boolean = @static true
+  stable content: Function2<Composer, Int, Unit>
 )

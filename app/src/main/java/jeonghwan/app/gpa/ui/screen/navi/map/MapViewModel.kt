@@ -1,5 +1,6 @@
 package jeonghwan.app.gpa.ui.screen.navi.map
 
+import androidx.compose.runtime.Immutable
 import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -46,6 +47,7 @@ data class TombDataModel(
     }
 }
 
+@Immutable
 data class MapUiState(
     val tombs: List<TombDataModel> = emptyList(),
     val isLoading: Boolean = false,
