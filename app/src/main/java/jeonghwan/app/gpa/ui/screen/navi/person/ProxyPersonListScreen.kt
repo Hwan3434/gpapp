@@ -6,12 +6,10 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.snapshotFlow
-import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 
 @Composable
 fun ProxyPersonListScreen(
-    modifier: Modifier = Modifier,
     viewModel: PersonListViewModel = hiltViewModel(),
     goToPersonDetail: (Int) -> Unit,
 ) {

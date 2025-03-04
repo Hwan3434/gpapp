@@ -20,9 +20,7 @@ import jeonghwan.app.gpa.ui.screen.navi.detail.TombDetailScreen
 import jeonghwan.app.gpa.ui.screen.navi.detail.person.PersonDetailScreen
 
 sealed class RouterItems(val route: String) {
-    data object Main : RouterItems("main") {
-        fun cratePath() = route
-    }
+    data object Main : RouterItems("main")
 
     data object PersonDetail : RouterItems("personDetail") {
         const val PARAM = "personKey"
