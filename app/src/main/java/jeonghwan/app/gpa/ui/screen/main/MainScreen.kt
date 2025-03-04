@@ -12,15 +12,11 @@ import androidx.compose.material3.Tab
 import androidx.compose.material3.TabRow
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.saveable.Saver
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.saveable.rememberSaveableStateHolder
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
+import com.naver.maps.map.compose.CameraPositionState
 import jeonghwan.app.gpa.R
 import jeonghwan.app.gpa.ui.screen.navi.favorite.FavoritePersonScreen
 import jeonghwan.app.gpa.ui.screen.navi.map.MapScreen
@@ -33,49 +29,11 @@ sealed class NaviItems(val route: String, private val titleResId: Int, val icon:
         const val FAVORITE = "FAVORITE"
     }
 
-    data object Map : NaviItems(MAP, R.string.navi_map, Icons.Filled.LocationOn) {
-        @Composable
-        override fun GetScreen(
-            modifier: Modifier,
-            onNextButtonClicked: ((Int) -> Unit)?,
-            onFavoriteButtonClicked: ((Int) -> Unit)?,
-        ) {
-            MapScreen(
-                onNextButtonClicked = onNextButtonClicked!!,
-            )
-        }
-    }
+    data object Map : NaviItems(MAP, R.string.navi_map, Icons.Filled.LocationOn)
 
-    data object Person : NaviItems(PERSON, R.string.navi_person, Icons.Filled.Person) {
-        @Composable
-        override fun GetScreen(
-            modifier: Modifier,
-            onNextButtonClicked: ((Int) -> Unit)?,
-            onFavoriteButtonClicked: ((Int) -> Unit)?,
-        ) {
-            ProxyPersonListScreen(
-                onDetailButtonClicked = onNextButtonClicked!!,
-            )
-        }
-    }
+    data object Person : NaviItems(PERSON, R.string.navi_person, Icons.Filled.Person)
 
-    data object Favorite : NaviItems(FAVORITE, R.string.navi_favorite, Icons.Filled.Favorite) {
-        @Composable
-        override fun GetScreen(
-            modifier: Modifier,
-            onNextButtonClicked: ((Int) -> Unit)?,
-            onFavoriteButtonClicked: ((Int) -> Unit)?,
-        ) {
-            FavoritePersonScreen()
-        }
-    }
-
-    @Composable
-    abstract fun GetScreen(
-        modifier: Modifier,
-        onNextButtonClicked: ((Int) -> Unit)?,
-        onFavoriteButtonClicked: ((Int) -> Unit)?,
-    )
+    data object Favorite : NaviItems(FAVORITE, R.string.navi_favorite, Icons.Filled.Favorite)
 
     @Composable
     fun GetTab(
@@ -91,22 +49,15 @@ sealed class NaviItems(val route: String, private val titleResId: Int, val icon:
     }
 }
 
-private val naviItemsSaver =
-    Saver<NaviItems, String>(
-        save = { it.route },
-        restore = { route ->
-            val tabs = listOf(NaviItems.Map, NaviItems.Person, NaviItems.Favorite)
-            tabs.find { it.route == route } ?: NaviItems.Map
-        },
-    )
-
 @Composable
 fun MainScreen(
     modifier: Modifier = Modifier,
-    onNextButtonClicked: (Int) -> Unit,
+    selectedTab: NaviItems,
+    cameraPositionState: CameraPositionState,
+    goToPersonDetail: (Int) -> Unit,
     onFavoriteButtonClicked: (Int) -> Unit,
+    onTab: (NaviItems) -> Unit,
 ) {
-    var selectedTab by rememberSaveable(stateSaver = naviItemsSaver) { mutableStateOf(NaviItems.Map) }
     val tabs = listOf(NaviItems.Map, NaviItems.Person, NaviItems.Favorite)
     val saveableStateHolder = rememberSaveableStateHolder()
 
@@ -119,7 +70,7 @@ fun MainScreen(
                         tab.GetTab(
                             selectedTab,
                         ) {
-                            selectedTab = tab
+                            onTab(tab)
                         }
                     }
                 },
@@ -128,11 +79,18 @@ fun MainScreen(
     ) { innerPadding ->
         Box(modifier = modifier.padding(innerPadding)) {
             saveableStateHolder.SaveableStateProvider(key = selectedTab.route) {
-                selectedTab.GetScreen(
-                    modifier,
-                    onNextButtonClicked,
-                    onFavoriteButtonClicked,
-                )
+                when (selectedTab) {
+                    NaviItems.Map ->
+                        MapScreen(
+                            cameraPositionState = cameraPositionState,
+                            goToPersonDetail = goToPersonDetail,
+                        )
+                    NaviItems.Person ->
+                        ProxyPersonListScreen(
+                            goToPersonDetail = goToPersonDetail,
+                        )
+                    NaviItems.Favorite -> FavoritePersonScreen()
+                }
             }
         }
     }

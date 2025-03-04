@@ -6,14 +6,12 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.snapshotFlow
-import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 
 @Composable
 fun ProxyPersonListScreen(
-    modifier: Modifier = Modifier,
     viewModel: PersonListViewModel = hiltViewModel(),
-    onDetailButtonClicked: (Int) -> Unit,
+    goToPersonDetail: (Int) -> Unit,
 ) {
     val uiState by viewModel.uiState.collectAsState()
     val favoriteSet by viewModel.favoriteFlow.collectAsState(initial = emptySet())
@@ -45,6 +43,6 @@ fun ProxyPersonListScreen(
             favoriteSet.contains(it)
         },
         onToggleFavorite = viewModel::toggleFavorite,
-        onDetailScreen = onDetailButtonClicked,
+        onDetailScreen = goToPersonDetail,
     )
 }

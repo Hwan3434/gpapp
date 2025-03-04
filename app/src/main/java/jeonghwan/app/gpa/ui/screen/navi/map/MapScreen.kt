@@ -22,18 +22,15 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.naver.maps.geometry.LatLng
-import com.naver.maps.map.CameraPosition
+import com.naver.maps.map.compose.CameraPositionState
 import com.naver.maps.map.compose.ExperimentalNaverMapApi
 import com.naver.maps.map.compose.LocationTrackingMode
 import com.naver.maps.map.compose.MapProperties
 import com.naver.maps.map.compose.MapType
 import com.naver.maps.map.compose.MapUiSettings
 import com.naver.maps.map.compose.NaverMap
-import com.naver.maps.map.compose.rememberCameraPositionState
 import jeonghwan.app.domain.model.TombEntity
 import jeonghwan.app.gpa.R
-import timber.log.Timber
 
 fun MapType.changedNextMapType(): MapType {
     return when (this) {
@@ -82,8 +79,9 @@ private val naviMapSaver =
 @Composable
 fun MapScreen(
     modifier: Modifier = Modifier,
+    cameraPositionState: CameraPositionState,
     viewModel: MapViewModel = hiltViewModel(),
-    onNextButtonClicked: (Int) -> Unit,
+    goToPersonDetail: (Int) -> Unit,
 ) {
     val uiState by viewModel.uiState.collectAsState()
 
@@ -95,7 +93,8 @@ fun MapScreen(
         onClick = { tomb ->
             viewModel.toggleTombPopupWindowVisibility(tomb.key)
         },
-        onDetailClick = onNextButtonClicked,
+        onDetailClick = goToPersonDetail,
+        cameraPositionState = cameraPositionState,
         onBackEvent = { viewModel.onBackEvent() },
     )
 }
@@ -105,6 +104,7 @@ fun MapScreen(
 fun MapItemScreen(
     modifier: Modifier,
     uiState: MapUiState,
+    cameraPositionState: CameraPositionState,
     onClick: (TombEntity) -> Unit,
     onDetailClick: (Int) -> Unit,
     onBackEvent: () -> Boolean,
@@ -124,13 +124,6 @@ fun MapItemScreen(
         }
         return
     }
-
-    val cameraPositionState =
-        rememberCameraPositionState(
-            init = {
-                position = CameraPosition(LatLng(36.615743, 128.352462), 14.0)
-            },
-        )
 
     val context = LocalContext.current
     val exitMessage = stringResource(R.string.toast_exit)
@@ -160,7 +153,6 @@ fun MapItemScreen(
                     isLogoClickEnabled = false,
                 ),
             onMapClick = { _, _ ->
-                Timber.d("맵 클릭 !!")
                 uiState.tombs.firstOrNull { it.isWindowVisible }?.let {
                     onClick(it.tomb)
                 }

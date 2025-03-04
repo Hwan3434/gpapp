@@ -77,8 +77,9 @@ fun <T : Any> LazyPagingGrid(
     ) {
         LazyVerticalStaggeredGrid(
             state = scrollState,
-            modifier = Modifier
-                .weight(1f),
+            modifier =
+                Modifier
+                    .weight(1f),
             columns = StaggeredGridCells.Fixed(2),
             verticalItemSpacing = 4.dp,
             horizontalArrangement = Arrangement.spacedBy(4.dp),
@@ -90,13 +91,13 @@ fun <T : Any> LazyPagingGrid(
             }
         }
 
-        when(lazyPagingItems.loadState.append) {
+        when (lazyPagingItems.loadState.append) {
             is LoadState.Loading -> {
                 Box(
                     modifier =
-                    Modifier
-                        .fillMaxWidth()
-                        .padding(16.dp),
+                        Modifier
+                            .fillMaxWidth()
+                            .padding(16.dp),
                     contentAlignment = Alignment.Center,
                 ) {
                     CircularProgressIndicator()
@@ -106,9 +107,9 @@ fun <T : Any> LazyPagingGrid(
             is LoadState.Error -> {
                 Box(
                     modifier =
-                    Modifier
-                        .fillMaxWidth()
-                        .padding(16.dp),
+                        Modifier
+                            .fillMaxWidth()
+                            .padding(16.dp),
                     contentAlignment = Alignment.Center,
                 ) {
                     Text(
@@ -124,13 +125,13 @@ fun <T : Any> LazyPagingGrid(
                     Text(
                         "No more data",
                         modifier =
-                        Modifier
-                            .fillMaxWidth()
-                            .background(
-                                color = Color.LightGray,
-                                shape = RoundedCornerShape(8.dp),
-                            )
-                            .padding(16.dp),
+                            Modifier
+                                .fillMaxWidth()
+                                .background(
+                                    color = Color.LightGray,
+                                    shape = RoundedCornerShape(8.dp),
+                                )
+                                .padding(16.dp),
                         textAlign = TextAlign.Center,
                         fontWeight = FontWeight.Bold,
                         fontSize = 18.sp,

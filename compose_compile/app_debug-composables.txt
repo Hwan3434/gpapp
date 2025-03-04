@@ -1,40 +1,8 @@
-restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun GetScreen(
-  unused stable modifier: Modifier
-  stable onNextButtonClicked: Function1<Int, Unit>?
-  unused stable onFavoriteButtonClicked: Function1<Int, Unit>?
-  unused stable <this>: Map
+restartable skippable scheme("[com.naver.maps.map.compose.NaverMapComposable]") fun GpWindow(
+  tomb: TombDataModel
+  stable onClick: Function1<TombEntity, Unit>
+  stable onDetailClick: Function1<Int, Unit>
 )
-restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun GetScreen(
-  unused stable modifier: Modifier
-  stable onNextButtonClicked: Function1<Int, Unit>?
-  unused stable onFavoriteButtonClicked: Function1<Int, Unit>?
-  unused stable <this>: Person
-)
-restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun GetScreen(
-  unused stable modifier: Modifier
-  unused stable onNextButtonClicked: Function1<Int, Unit>?
-  unused stable onFavoriteButtonClicked: Function1<Int, Unit>?
-  unused stable <this>: Favorite
-)
-restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun GetTab(
-  stable selected: NaviItems
-  stable onClick: Function0<Unit>
-  stable <this>: NaviItems
-)
-restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun MainScreen(
-  stable modifier: Modifier? = @static Companion
-  stable onNextButtonClicked: Function1<Int, Unit>
-  stable onFavoriteButtonClicked: Function1<Int, Unit>
-)
-restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun TestPersonListScreen(
-  stable uiState: Function0<PersonUiState>
-  stable listState: LazyListState
-  stable isFavorite: Function1<PersonEntity, Boolean>
-  stable onToggleFavorite: Function1<PersonEntity, Unit>
-  unused stable onDetailScreen: Function1<Int, Unit>
-)
-restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun ProxyPersonListScreen(
-  unused stable modifier: Modifier? = @static Companion
-  viewModel: PersonListViewModel? = @dynamic hiltViewModel(null, null, $composer, 0, 0b0011)
-  stable onDetailButtonClicked: Function1<Int, Unit>
+restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun GpWindowBox(
+  stable p: PersonEntity
 )
