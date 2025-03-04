@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
@@ -82,6 +83,7 @@ fun GpWindowBox(p: PersonEntity) {
     Box(
         modifier =
             Modifier
+                .width(200.dp)
                 .background(Color.White, shape = RoundedCornerShape(16.dp))
                 .padding(16.dp),
     ) {
