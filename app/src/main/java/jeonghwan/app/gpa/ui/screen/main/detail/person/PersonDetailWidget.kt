@@ -1,5 +1,6 @@
 package jeonghwan.app.gpa.ui.screen.main.detail.person
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -23,26 +24,28 @@ fun PersonDetailWidget(
 ) {
     Column {
         Text("상세정보 :: ${person.name}")
-        LinkRow("부 : ", listOf(father).toImmutableList(), goToPerson)
+        Text(modifier = Modifier.clickable {
+            goToPerson(person.key)
+        },text = "부 : ${father?.name}")
 //        LinkRow("모 : ", listOf(mother).toImmutableList(), goToPerson)
 //        LinkRow("배우자 : ", listOf(spouse).toImmutableList(), goToPerson)
 //        LinkRow("자식 : ", children.toImmutableList(), goToPerson)
     }
 }
 
-@Composable
-private fun LinkRow(
-    label: String,
-    value: ImmutableList<PersonEntity?>,
-    goToPerson: (Int) -> Unit,
-) {
-    Row {
-        Text(label)
-        value.forEach { person ->
-            Text(
-                text = person?.name ?: "none",
-            )
-            Spacer(modifier = Modifier.width(4.dp))
-        }
-    }
-}
+//@Composable
+//private fun LinkRow(
+//    label: String,
+//    value: ImmutableList<PersonEntity?>,
+//    goToPerson: (Int) -> Unit,
+//) {
+//    Row {
+//        Text(label)
+//        value.forEach { person ->
+//            Text(
+//                text = person?.name ?: "none",
+//            )
+//            Spacer(modifier = Modifier.width(4.dp))
+//        }
+//    }
+//}

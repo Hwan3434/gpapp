@@ -40,6 +40,10 @@ fun PersonDetailScreen(
         derivedStateOf { uiState.personEntity }
     }
 
+    val favorite by remember {
+        derivedStateOf { uiState.isFavorite }
+    }
+
     Scaffold(
         modifier = modifier,
         topBar = {
@@ -53,7 +57,7 @@ fun PersonDetailScreen(
                 )
                 FavoriteIcon(
                     person = personEntity,
-                    isFavorite = loading,
+                    isFavorite = favorite,
                     onFavoriteCheckedChange = viewModel::toggleFavorite,
                 )
             }
