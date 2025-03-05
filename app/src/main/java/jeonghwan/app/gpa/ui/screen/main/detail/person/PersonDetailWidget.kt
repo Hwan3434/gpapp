@@ -2,30 +2,31 @@ package jeonghwan.app.gpa.ui.screen.main.detail.person
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.material3.Button
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import jeonghwan.app.domain.model.PersonEntity
 import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.toImmutableList
 
 @Composable
 fun PersonDetailWidget(
-    person: PersonEntity?,
+    person: PersonEntity,
     father: PersonEntity?,
+    mother: PersonEntity?,
+    spouse: PersonEntity?,
+    children: List<PersonEntity>,
     goToPerson: (Int) -> Unit,
 ) {
     Column {
-        Text("상세정보 :: ${person?.name}")
-        Text("부 :: ${father?.name}")
-        Button(
-            onClick = {
-                if (father != null) {
-                    goToPerson(father.key)
-                }
-            },
-        ) {
-            Text("자세히 보기")
-        }
+        Text("상세정보 :: ${person.name}")
+        LinkRow("부 : ", listOf(father).toImmutableList(), goToPerson)
+//        LinkRow("모 : ", listOf(mother).toImmutableList(), goToPerson)
+//        LinkRow("배우자 : ", listOf(spouse).toImmutableList(), goToPerson)
+//        LinkRow("자식 : ", children.toImmutableList(), goToPerson)
     }
 }
 
@@ -36,22 +37,12 @@ private fun LinkRow(
     goToPerson: (Int) -> Unit,
 ) {
     Row {
-        Text("$value")
-//        value.forEach { person ->
-//            Text(
-//                text = person?.name ?: "null",
-// //                modifier = Modifier.clickable {
-// //                    if (person != null) {
-// //                        goToPerson(person.key)
-// //                    }
-// //                },
-// //                style =
-// //                TextStyle().copy(
-// //                    color = Color.Blue,
-// //                    textDecoration = TextDecoration.Underline,
-// //                ),
-//            )
-//            Spacer(modifier = Modifier.width(4.dp))
-//        }
+        Text(label)
+        value.forEach { person ->
+            Text(
+                text = person?.name ?: "none",
+            )
+            Spacer(modifier = Modifier.width(4.dp))
+        }
     }
 }
