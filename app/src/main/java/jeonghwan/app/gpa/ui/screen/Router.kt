@@ -112,9 +112,6 @@ fun Router(
                     routerViewModel.updateTab(NaviItems.Map)
                     routerViewModel.updateCameraPositionByPersonKey(key)
                 },
-                goToPerson = { key ->
-                    navController.navigate(RouterItems.PersonDetail.createPath(key))
-                },
             )
         }
 

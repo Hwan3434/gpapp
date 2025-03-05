@@ -21,7 +21,6 @@ data class PersonDetailUiState(
     val mother: PersonEntity? = null,
     val spouse: PersonEntity? = null,
     val children: List<PersonEntity> = emptyList(),
-    val siblings: List<PersonEntity> = emptyList(),
 )
 
 @HiltViewModel
@@ -36,7 +35,7 @@ class PersonDetailViewModel
         fun fetchPersonDetail(personKey: Int) {
             _uiState.value = _uiState.value.copy(isLoading = true)
             viewModelScope.launch {
-                delay(3000L)
+                delay(1000L)
                 val result = personUseCaseInterface.getPerson(personKey)
                 val resultFavorite = personUseCaseInterface.isFavorite(personKey)
                 if (result.isSuccess) {
@@ -54,7 +53,7 @@ class PersonDetailViewModel
                         if (entity.spouse != null) {
                             spouse = personUseCaseInterface.getPerson(entity.spouse!!).getOrNull()
                         }
-
+                        val children: List<PersonEntity>? = personUseCaseInterface.getPersonChild(entity.key).getOrNull()
                         _uiState.value =
                             _uiState.value.copy(
                                 personEntity = result.getOrNull(),
@@ -62,8 +61,12 @@ class PersonDetailViewModel
                                 mother = mother,
                                 spouse = spouse,
                                 isFavorite = resultFavorite,
+                                children = children ?: emptyList(),
+                                isLoading = false,
                             )
                     }
+                } else {
+                    _uiState.value = _uiState.value.copy(isLoading = false)
                 }
             }
         }

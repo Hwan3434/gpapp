@@ -1,5 +1,6 @@
 package jeonghwan.app.gpa.ui.screen.main.detail.person
 
+import androidx.compose.foundation.layout.RowScope
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Favorite
@@ -18,8 +19,7 @@ import jeonghwan.app.domain.model.PersonEntity
 fun PersonDetailAppBar(
     personEntity: PersonEntity?,
     close: () -> Unit,
-    goToMap: (Int) -> Unit,
-    favoriteContent: @Composable (PersonEntity) -> Unit,
+    icons: @Composable RowScope.(PersonEntity) -> Unit,
 ) {
     TopAppBar(
         title = {
@@ -32,13 +32,7 @@ fun PersonDetailAppBar(
         },
         actions = {
             personEntity?.let {
-                Location(
-                    key = personEntity.key,
-                    goToMap = goToMap,
-                )
-                favoriteContent(
-                    personEntity,
-                )
+                icons(it)
             }
         },
     )
@@ -50,7 +44,7 @@ private fun TitleText(person: PersonEntity?) {
 }
 
 @Composable
-private fun Location(
+fun Location(
     key: Int,
     goToMap: (Int) -> Unit,
 ) {

@@ -10,7 +10,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
-import kotlinx.collections.immutable.toImmutableList
 
 @Composable
 fun PersonDetailScreen(
@@ -19,7 +18,6 @@ fun PersonDetailScreen(
     viewModel: PersonDetailViewModel = hiltViewModel(),
     close: () -> Unit,
     goToMap: (Int) -> Unit,
-    goToPerson: (Int) -> Unit,
 ) {
     val uiState by viewModel.uiState.collectAsState()
 
@@ -27,16 +25,35 @@ fun PersonDetailScreen(
         viewModel.fetchPersonDetail(personKey)
     }
 
+//    if(uiState.isLoading){
+//        Scaffold(
+//            modifier = modifier,
+//        ) { innerPadding ->
+//            Box(
+//                modifier = Modifier
+//                    .padding(innerPadding)
+//                    .fillMaxSize(), // Box의 크기를 최대로 확장
+//                contentAlignment = Alignment.Center // 내부 콘텐츠를 가운데 정렬
+//            ){
+//                CircularProgressIndicator()
+//            }
+//        }
+//        return
+//    }
+
     Scaffold(
         modifier = modifier,
         topBar = {
             PersonDetailAppBar(
                 personEntity = uiState.personEntity,
                 close = close,
-                goToMap = goToMap,
-            ) {
+            ) { personEntity ->
+                Location(
+                    key = personEntity.key,
+                    goToMap = goToMap,
+                )
                 FavoriteIcon(
-                    person = it,
+                    person = personEntity,
                     isFavorite = uiState.isFavorite,
                     onFavoriteCheckedChange = viewModel::toggleFavorite,
                 )
@@ -49,11 +66,12 @@ fun PersonDetailScreen(
             PersonDetailWidget(
                 person = uiState.personEntity,
                 father = uiState.father,
-                mother = uiState.mother,
-                spouse = uiState.spouse,
-                children = uiState.children.toImmutableList(),
-                siblings = uiState.siblings.toImmutableList(),
-                goToPerson = goToPerson,
+//                mother = uiState.mother,
+//                spouse = uiState.spouse,
+//                children = uiState.children.toImmutableList(),
+                goToPerson = {
+                    viewModel.fetchPersonDetail(it)
+                },
             )
         }
     }
@@ -66,6 +84,5 @@ fun PreviewPersonDetailScreen() {
         personKey = 1,
         close = {},
         goToMap = {},
-        goToPerson = {},
     )
 }

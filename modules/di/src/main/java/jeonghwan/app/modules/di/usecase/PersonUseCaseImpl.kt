@@ -116,4 +116,12 @@ class PersonUseCaseImpl(
             Result.failure(e)
         }
     }
+
+    override suspend fun getPersonChild(key: Int): Result<List<PersonEntity>> {
+        return try {
+            Result.success(personRepository.getPersonChild(key))
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
 }
