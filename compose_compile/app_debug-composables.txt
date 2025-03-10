@@ -1,8 +1,11 @@
-restartable skippable scheme("[com.naver.maps.map.compose.NaverMapComposable]") fun GpWindow(
-  tomb: TombDataModel
-  stable onClick: Function1<TombEntity, Unit>
-  stable onDetailClick: Function1<Int, Unit>
+restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun PersonDetailWidget(
+  unused stable modifier: Modifier
+  stable person: PersonEntity?
+  stable father: PersonEntity?
+  stable goToPerson: Function1<Int, Unit>
 )
-restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun GpWindowBox(
-  stable p: PersonEntity
+restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun LinkRow(
+  unused stable label: String
+  stable value: ImmutableList<PersonEntity?>
+  unused stable goToPerson: Function1<Int, Unit>
 )

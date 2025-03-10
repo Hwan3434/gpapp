@@ -29,4 +29,9 @@ class PersonRepositoryImpl (
         return model?.toEntity()
     }
 
+    override suspend fun getPersonChild(key: Int): List<PersonEntity> {
+        val personModels: List<PersonModel> = firebase.getPersonChild(key)
+        return personModels.map { it.toEntity() }
+    }
+
 }

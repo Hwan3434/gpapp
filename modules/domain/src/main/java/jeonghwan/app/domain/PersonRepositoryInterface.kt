@@ -7,4 +7,6 @@ interface PersonRepositoryInterface {
     suspend fun getPersonPaging(page: DocumentSnapshot?, size: Int): Pair<List<PersonEntity>, DocumentSnapshot?>
     suspend fun getPersonAll(): List<PersonEntity>
     suspend fun getPerson(key: Int): PersonEntity?
+
+    suspend fun getPersonChild(key: Int): List<PersonEntity>
 }

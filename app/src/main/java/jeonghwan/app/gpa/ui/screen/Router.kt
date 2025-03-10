@@ -16,8 +16,8 @@ import androidx.navigation.navArgument
 import com.naver.maps.map.compose.rememberCameraPositionState
 import jeonghwan.app.gpa.ui.screen.main.MainScreen
 import jeonghwan.app.gpa.ui.screen.main.NaviItems
-import jeonghwan.app.gpa.ui.screen.navi.detail.TombDetailScreen
-import jeonghwan.app.gpa.ui.screen.navi.detail.person.PersonDetailScreen
+import jeonghwan.app.gpa.ui.screen.main.detail.person.PersonDetailScreen
+import jeonghwan.app.gpa.ui.screen.main.detail.tomb.TombDetailScreen
 
 sealed class RouterItems(val route: String) {
     data object Main : RouterItems("main")
@@ -104,16 +104,13 @@ fun Router(
             PersonDetailScreen(
                 modifier = modifier,
                 personKey = personKey,
+                close = {
+                    navController.popBackStack()
+                },
                 goToMap = { key ->
                     navController.popBackStack()
                     routerViewModel.updateTab(NaviItems.Map)
                     routerViewModel.updateCameraPositionByPersonKey(key)
-                },
-                goToPerson = { key ->
-                    navController.navigate(RouterItems.PersonDetail.createPath(key))
-                },
-                onFavoriteButtonClicked = { _ ->
-                    TODO("Not yet implemented")
                 },
             )
         }

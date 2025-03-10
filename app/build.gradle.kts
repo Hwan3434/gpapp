@@ -95,4 +95,6 @@ dependencies {
     ksp(libs.room.compiler)
     implementation(libs.room.paging)
     implementation(libs.androidx.paging.compose.android)
+
+    implementation("org.jetbrains.kotlinx:kotlinx-collections-immutable:0.3.5")
 }

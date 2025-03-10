@@ -1,4 +1,4 @@
-package jeonghwan.app.gpa.ui.screen.navi.detail
+package jeonghwan.app.gpa.ui.screen.main.detail.tomb
 
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold

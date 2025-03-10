@@ -1,7 +1,9 @@
 package jeonghwan.app.modules.data
 
 import com.google.firebase.firestore.DocumentSnapshot
+import com.google.firebase.firestore.Filter
 import com.google.firebase.firestore.FirebaseFirestore
+import jeonghwan.app.domain.model.PersonEntity
 import jeonghwan.app.modules.data.model.PersonModel
 import jeonghwan.app.modules.data.model.TombModel
 import kotlinx.coroutines.tasks.await
@@ -99,6 +101,28 @@ class FirebaseDataSourceImpl (
             e.printStackTrace()
             null
         }
+    }
+
+    override suspend fun getPersonChild(key: Int): List<PersonModel> {
+        val temp = mutableListOf<PersonModel>()
+        try {
+            val res = firebaseInstance.collection(PERSON_COLLECTION)
+                .where(
+                    Filter.or(
+                        Filter.equalTo("father", key),
+                        Filter.equalTo("mother", key)
+                    )
+                )
+                .get()
+                .await()
+            for (doc in res) {
+                val person: PersonModel = doc.toObject(PersonModel::class.java)
+                temp.add(person)
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+        return temp
     }
 
     override suspend fun getTomb(key: Int): TombModel? {
