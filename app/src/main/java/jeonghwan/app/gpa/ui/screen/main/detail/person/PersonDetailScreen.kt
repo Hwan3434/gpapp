@@ -51,10 +51,13 @@ fun PersonDetailScreen(
                 personEntity = uiState.personEntity,
                 close = close,
             ) { personEntity ->
-                Location(
-                    key = personEntity.key,
-                    goToMap = goToMap,
-                )
+                if(!personEntity.alive) {
+                    Location(
+                        key = personEntity.key,
+                        goToMap = goToMap,
+                    )
+                }
+
                 FavoriteIcon(
                     person = personEntity,
                     isFavorite = favorite,
